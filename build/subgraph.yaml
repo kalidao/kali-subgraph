@@ -1,6 +1,6 @@
 specVersion: 0.0.2
 schema:
-  file: ./schema.graphql
+  file: schema.graphql
 dataSources:
   - kind: ethereum
     name: KaliDAOFactory
@@ -16,8 +16,8 @@ dataSources:
         - DAOdeployed
       abis:
         - name: KaliDAOFactory
-          file: ./abis/KaliDAOFactory.json
+          file: KaliDAOFactory/abis/KaliDAOFactory.json
       eventHandlers:
         - event: DAOdeployed(indexed address,string)
           handler: handleDAOdeployed
-      file: ./src/mapping.ts
+      file: KaliDAOFactory/KaliDAOFactory.wasm
