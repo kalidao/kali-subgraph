@@ -1,0 +1,6 @@
+type ExampleEntity @entity {
+  id: ID!
+  count: BigInt!
+  kaliDAO: Bytes! # address
+  name: String! # string
+}

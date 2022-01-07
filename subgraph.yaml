@@ -1,0 +1,23 @@
+specVersion: 0.0.1
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: KaliDAOFactory
+    network: rinkeby
+    source:
+      address: "0xfc0Fd933D8ef5b7e552E67aCfc4c09711B413f30"
+      abi: KaliDAOFactory
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - DAOdeployed
+      abis:
+        - name: KaliDAOFactory
+          file: ./abis/KaliDAOFactory.json
+      eventHandlers:
+        - event: DAOdeployed(indexed address,string)
+          handler: handleDAOdeployed
+      file: ./src/mapping.ts
