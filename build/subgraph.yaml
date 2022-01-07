@@ -1,4 +1,6 @@
 specVersion: 0.0.2
+description: KaliDAO
+repository: https://github.com/nerderlyne/kali-subgraph
 schema:
   file: schema.graphql
 dataSources:
@@ -8,12 +10,13 @@ dataSources:
     source:
       address: "0xfc0Fd933D8ef5b7e552E67aCfc4c09711B413f30"
       abi: KaliDAOFactory
+      startBlock: 9918908
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
       language: wasm/assemblyscript
       entities:
-        - DAOdeployed
+        - Kali
       abis:
         - name: KaliDAOFactory
           file: KaliDAOFactory/abis/KaliDAOFactory.json

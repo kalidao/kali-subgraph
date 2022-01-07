@@ -1,6 +1,7 @@
+# TODO: It's taking the account deployed from as ID which obviously shouldn't be the case. Solve.
 type Kali @entity {
   id: ID!
-  address: Bytes!
+  daoAddress: Bytes!
   name: String!
 }
 

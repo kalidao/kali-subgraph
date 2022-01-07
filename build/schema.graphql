@@ -1,6 +1,6 @@
 type Kali @entity {
   id: ID!
-  address: Bytes!
+  daoAddress: Bytes!
   name: String!
 }
 

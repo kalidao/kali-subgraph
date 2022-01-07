@@ -16,7 +16,7 @@ export class Kali extends Entity {
     super();
     this.set("id", Value.fromString(id));
 
-    this.set("address", Value.fromBytes(Bytes.empty()));
+    this.set("daoAddress", Value.fromBytes(Bytes.empty()));
     this.set("name", Value.fromString(""));
   }
 
@@ -46,13 +46,13 @@ export class Kali extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get address(): Bytes {
-    let value = this.get("address");
+  get daoAddress(): Bytes {
+    let value = this.get("daoAddress");
     return value!.toBytes();
   }
 
-  set address(value: Bytes) {
-    this.set("address", Value.fromBytes(value));
+  set daoAddress(value: Bytes) {
+    this.set("daoAddress", Value.fromBytes(value));
   }
 
   get name(): string {

@@ -12,7 +12,7 @@ export function handleDAOdeployed(event: DAOdeployed): void {
     kali = new Kali(event.transaction.from.toHex())
   }
 
-  kali.address = event.params.kaliDAO
+  kali.daoAddress = event.params.kaliDAO
   kali.name = event.params.name
 
   kali.save()
