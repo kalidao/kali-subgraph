@@ -4,7 +4,7 @@ repository: https://github.com/nerderlyne/kali-subgraph
 schema:
   file: schema.graphql
 dataSources:
-  - kind: ethereum
+  - kind: ethereum/contract
     name: KaliDAOFactory
     network: rinkeby
     source:
@@ -13,7 +13,7 @@ dataSources:
       startBlock: 9918908
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.5
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       entities:
         - Kali
@@ -24,4 +24,31 @@ dataSources:
       eventHandlers:
         - event: DAOdeployed(indexed address,string)
           handler: handleDAOdeployed
+      file: KaliDAOFactory/KaliDAOFactory.wasm
+templates:
+  - name: KaliDAO
+    kind: ethereum/contract
+    network: rinkeby
+    source:
+      abi: KaliDAO
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - Proposal
+      abis:
+        - name: KaliDAO
+          file: KaliDAO/abis/KaliDAO.json
+      eventHandlers:
+        - event: NewProposal(indexed address,indexed uint256)
+          handler: handleNewProposal
+        - event: ProposalCancelled(indexed address,indexed uint256)
+          handler: handleProposalCancelled
+        - event: ProposalSponsored(indexed address,indexed uint256)
+          handler: handleProposalCancelled
+        - event: VoteCast(indexed address,indexed uint256,indexed bool)
+          handler: handleVoteCast
+        - event: ProposalProcessed(indexed uint256,indexed bool)
+          handler: handleProposalProcessed
       file: KaliDAOFactory/KaliDAOFactory.wasm

@@ -3,18 +3,21 @@ import {
   KaliDAOFactory,
   DAOdeployed
 } from "../generated/KaliDAOFactory/KaliDAOFactory"
-import { Kali } from "../generated/schema"
+import { DAO, User } from "../generated/schema"
+import { KaliDAO } from '../generated/templates'
 
 export function handleDAOdeployed(event: DAOdeployed): void {
-  let kali = Kali.load(event.transaction.from.toHex() + "-" + event.logIndex.toString())
+  // KaliDAO.create(event.params.kaliDAO)
 
-  if (!kali) {
-    kali = new Kali(event.transaction.from.toHex() + "-" + event.logIndex.toString())
-  }
+  // let kali = Kali.load(event.transaction.from.toHex() + "-" + event.logIndex.toString())
+
+  // if (!kali) {
+  //   kali = new Kali(event.transaction.from.toHex() + "-" + event.logIndex.toString())
+  // }
   
-  kali.founder = event.transaction.from.toHex()
-  kali.daoAddress = event.params.kaliDAO
-  kali.name = event.params.name
+  // kali.founder = event.transaction.from.toHex()
+  // kali.daoAddress = event.params.kaliDAO
+  // kali.name = event.params.name
 
-  kali.save()
+  // kali.save()
 }

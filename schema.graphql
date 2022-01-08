@@ -1,11 +1,22 @@
-type Kali @entity {
+type DAO @entity {
   id: ID!
   daoAddress: Bytes!
   name: String!
-  founder: String!
+  members: [User!]!
 }
 
-# type Member @entity {
+type User @entity {
+  id: ID!
+  daos: [DAO!]! @derivedFrom(field: "members")
+}
+
+# type UserDAO @entity {
 #   id: ID!
-#   kali: [Kali!]
+#   user: User!
+#   dao: DAO!
 # }
+
+type Proposal @entity {
+  id: ID!
+  dao: DAO!
+}

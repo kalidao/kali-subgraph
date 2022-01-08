@@ -11,31 +11,31 @@ import {
   BigDecimal
 } from "@graphprotocol/graph-ts";
 
-export class Kali extends Entity {
+export class DAO extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
 
     this.set("daoAddress", Value.fromBytes(Bytes.empty()));
     this.set("name", Value.fromString(""));
-    this.set("founder", Value.fromString(""));
+    this.set("members", Value.fromStringArray(new Array(0)));
   }
 
   save(): void {
     let id = this.get("id");
-    assert(id != null, "Cannot save Kali entity without an ID");
+    assert(id != null, "Cannot save DAO entity without an ID");
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        "Cannot save Kali entity with non-string ID. " +
+        "Cannot save DAO entity with non-string ID. " +
           'Considering using .toHex() to convert the "id" to a string.'
       );
-      store.set("Kali", id.toString(), this);
+      store.set("DAO", id.toString(), this);
     }
   }
 
-  static load(id: string): Kali | null {
-    return changetype<Kali | null>(store.get("Kali", id));
+  static load(id: string): DAO | null {
+    return changetype<DAO | null>(store.get("DAO", id));
   }
 
   get id(): string {
@@ -65,12 +65,54 @@ export class Kali extends Entity {
     this.set("name", Value.fromString(value));
   }
 
-  get founder(): string {
-    let value = this.get("founder");
+  get members(): Array<string> {
+    let value = this.get("members");
+    return value!.toStringArray();
+  }
+
+  set members(value: Array<string>) {
+    this.set("members", Value.fromStringArray(value));
+  }
+}
+
+export class User extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save User entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save User entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("User", id.toString(), this);
+    }
+  }
+
+  static load(id: string): User | null {
+    return changetype<User | null>(store.get("User", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
     return value!.toString();
   }
 
-  set founder(value: string) {
-    this.set("founder", Value.fromString(value));
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get daos(): Array<string> {
+    let value = this.get("daos");
+    return value!.toStringArray();
+  }
+
+  set daos(value: Array<string>) {
+    this.set("daos", Value.fromStringArray(value));
   }
 }
