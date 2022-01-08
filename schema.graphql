@@ -1,12 +1,11 @@
-# TODO: It's taking the account deployed from as ID which obviously shouldn't be the case. Solve.
 type Kali @entity {
   id: ID!
   daoAddress: Bytes!
   name: String!
+  founder: String!
 }
 
-type User @entity {
-  id: ID!
-  kali: Kali!
-  userAddress: Bytes!
-}
+# type Member @entity {
+#   id: ID!
+#   kali: [Kali!]
+# }

@@ -2,10 +2,10 @@ type Kali @entity {
   id: ID!
   daoAddress: Bytes!
   name: String!
+  founder: String!
 }
 
-type User @entity {
-  id: ID!
-  kali: Kali!
-  userAddress: Bytes!
-}
+# type Member @entity {
+#   id: ID!
+#   kali: [Kali!]
+# }

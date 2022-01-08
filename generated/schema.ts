@@ -18,6 +18,7 @@ export class Kali extends Entity {
 
     this.set("daoAddress", Value.fromBytes(Bytes.empty()));
     this.set("name", Value.fromString(""));
+    this.set("founder", Value.fromString(""));
   }
 
   save(): void {
@@ -63,58 +64,13 @@ export class Kali extends Entity {
   set name(value: string) {
     this.set("name", Value.fromString(value));
   }
-}
 
-export class User extends Entity {
-  constructor(id: string) {
-    super();
-    this.set("id", Value.fromString(id));
-
-    this.set("kali", Value.fromString(""));
-    this.set("userAddress", Value.fromBytes(Bytes.empty()));
-  }
-
-  save(): void {
-    let id = this.get("id");
-    assert(id != null, "Cannot save User entity without an ID");
-    if (id) {
-      assert(
-        id.kind == ValueKind.STRING,
-        "Cannot save User entity with non-string ID. " +
-          'Considering using .toHex() to convert the "id" to a string.'
-      );
-      store.set("User", id.toString(), this);
-    }
-  }
-
-  static load(id: string): User | null {
-    return changetype<User | null>(store.get("User", id));
-  }
-
-  get id(): string {
-    let value = this.get("id");
+  get founder(): string {
+    let value = this.get("founder");
     return value!.toString();
   }
 
-  set id(value: string) {
-    this.set("id", Value.fromString(value));
-  }
-
-  get kali(): string {
-    let value = this.get("kali");
-    return value!.toString();
-  }
-
-  set kali(value: string) {
-    this.set("kali", Value.fromString(value));
-  }
-
-  get userAddress(): Bytes {
-    let value = this.get("userAddress");
-    return value!.toBytes();
-  }
-
-  set userAddress(value: Bytes) {
-    this.set("userAddress", Value.fromBytes(value));
+  set founder(value: string) {
+    this.set("founder", Value.fromString(value));
   }
 }

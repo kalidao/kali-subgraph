@@ -17,6 +17,7 @@ dataSources:
       language: wasm/assemblyscript
       entities:
         - Kali
+        - User
       abis:
         - name: KaliDAOFactory
           file: ./abis/KaliDAOFactory.json

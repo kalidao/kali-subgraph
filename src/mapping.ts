@@ -6,12 +6,13 @@ import {
 import { Kali } from "../generated/schema"
 
 export function handleDAOdeployed(event: DAOdeployed): void {
-  let kali = Kali.load(event.transaction.from.toHex())
+  let kali = Kali.load(event.transaction.from.toHex() + "-" + event.logIndex.toString())
 
   if (!kali) {
-    kali = new Kali(event.transaction.from.toHex())
+    kali = new Kali(event.transaction.from.toHex() + "-" + event.logIndex.toString())
   }
-
+  
+  kali.founder = event.transaction.from.toHex()
   kali.daoAddress = event.params.kaliDAO
   kali.name = event.params.name
 
