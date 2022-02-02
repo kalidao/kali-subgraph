@@ -64,9 +64,9 @@ export class DAOdeployed__Params {
   }
 }
 
-export class KaliDAOFactory extends ethereum.SmartContract {
-  static bind(address: Address): KaliDAOFactory {
-    return new KaliDAOFactory("KaliDAOFactory", address);
+export class KaliDAOfactory extends ethereum.SmartContract {
+  static bind(address: Address): KaliDAOfactory {
+    return new KaliDAOfactory("KaliDAOfactory", address);
   }
 
   kaliMaster(): Address {

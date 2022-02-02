@@ -1,17 +1,36 @@
 type DAO @entity {
   id: ID!
-  daoAddress: Bytes!
-  name: String!
-  members: [User!]!
+  birth: BigInt!
+  founder: Bytes!
+  token: Token! @derivedFrom(field: "dao")
+  docs: String!
+  votingPeriod: BigInt!
+  paused: Boolean!
+  members: [Member!]! @derivedFrom(field: "dao")
+  proposals: [Proposal!] @derivedFrom(field: "dao")
+  extensions: Bytes!
+  # extensionsData: Bytes!
+  quorum: BigInt!
+  supermajority: BigInt!
 }
-
-type User @entity {
+type Token @entity {
   id: ID!
-  daos: [DAO!]! @derivedFrom(field: "members")
+  dao: DAO!
+  name: String!
+  symbol: String
 }
 
-# type UserDAO @entity {
-#   id: ID!
-#   user: User!
-#   dao: DAO!
-# }
+type Member @entity {
+  id: ID!
+  dao: [DAO!]!
+  shares: [BigInt!]!
+  proposals: [Proposal!]
+}
+
+type Proposal @entity {
+  id: ID!
+  dao: DAO!
+  proposer: Bytes!
+  sponsored: Boolean
+  status: Boolean!
+}

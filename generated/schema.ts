@@ -16,9 +16,13 @@ export class DAO extends Entity {
     super();
     this.set("id", Value.fromString(id));
 
-    this.set("daoAddress", Value.fromBytes(Bytes.empty()));
-    this.set("name", Value.fromString(""));
-    this.set("members", Value.fromStringArray(new Array(0)));
+    this.set("birth", Value.fromBigInt(BigInt.zero()));
+    this.set("founder", Value.fromBytes(Bytes.empty()));
+    this.set("docs", Value.fromString(""));
+    this.set("votingPeriod", Value.fromBigInt(BigInt.zero()));
+    this.set("extensions", Value.fromBytes(Bytes.empty()));
+    this.set("quorum", Value.fromBigInt(BigInt.zero()));
+    this.set("supermajority", Value.fromBigInt(BigInt.zero()));
   }
 
   save(): void {
@@ -47,22 +51,58 @@ export class DAO extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get daoAddress(): Bytes {
-    let value = this.get("daoAddress");
+  get birth(): BigInt {
+    let value = this.get("birth");
+    return value!.toBigInt();
+  }
+
+  set birth(value: BigInt) {
+    this.set("birth", Value.fromBigInt(value));
+  }
+
+  get founder(): Bytes {
+    let value = this.get("founder");
     return value!.toBytes();
   }
 
-  set daoAddress(value: Bytes) {
-    this.set("daoAddress", Value.fromBytes(value));
+  set founder(value: Bytes) {
+    this.set("founder", Value.fromBytes(value));
   }
 
-  get name(): string {
-    let value = this.get("name");
+  get token(): string {
+    let value = this.get("token");
     return value!.toString();
   }
 
-  set name(value: string) {
-    this.set("name", Value.fromString(value));
+  set token(value: string) {
+    this.set("token", Value.fromString(value));
+  }
+
+  get docs(): string {
+    let value = this.get("docs");
+    return value!.toString();
+  }
+
+  set docs(value: string) {
+    this.set("docs", Value.fromString(value));
+  }
+
+  get votingPeriod(): BigInt {
+    let value = this.get("votingPeriod");
+    return value!.toBigInt();
+  }
+
+  set votingPeriod(value: BigInt) {
+    this.set("votingPeriod", Value.fromBigInt(value));
+  }
+
+  get paused(): boolean {
+    let value = this.get("paused");
+    return value!.toBoolean();
+  }
+
+  set paused(value: boolean) {
+    this.set("paused", Value.fromBoolean(value));
   }
 
   get members(): Array<string> {
@@ -73,29 +113,76 @@ export class DAO extends Entity {
   set members(value: Array<string>) {
     this.set("members", Value.fromStringArray(value));
   }
+
+  get proposals(): Array<string> | null {
+    let value = this.get("proposals");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set proposals(value: Array<string> | null) {
+    if (!value) {
+      this.unset("proposals");
+    } else {
+      this.set("proposals", Value.fromStringArray(<Array<string>>value));
+    }
+  }
+
+  get extensions(): Bytes {
+    let value = this.get("extensions");
+    return value!.toBytes();
+  }
+
+  set extensions(value: Bytes) {
+    this.set("extensions", Value.fromBytes(value));
+  }
+
+  get quorum(): BigInt {
+    let value = this.get("quorum");
+    return value!.toBigInt();
+  }
+
+  set quorum(value: BigInt) {
+    this.set("quorum", Value.fromBigInt(value));
+  }
+
+  get supermajority(): BigInt {
+    let value = this.get("supermajority");
+    return value!.toBigInt();
+  }
+
+  set supermajority(value: BigInt) {
+    this.set("supermajority", Value.fromBigInt(value));
+  }
 }
 
-export class User extends Entity {
+export class Token extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
+
+    this.set("dao", Value.fromString(""));
+    this.set("name", Value.fromString(""));
   }
 
   save(): void {
     let id = this.get("id");
-    assert(id != null, "Cannot save User entity without an ID");
+    assert(id != null, "Cannot save Token entity without an ID");
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        "Cannot save User entity with non-string ID. " +
+        "Cannot save Token entity with non-string ID. " +
           'Considering using .toHex() to convert the "id" to a string.'
       );
-      store.set("User", id.toString(), this);
+      store.set("Token", id.toString(), this);
     }
   }
 
-  static load(id: string): User | null {
-    return changetype<User | null>(store.get("User", id));
+  static load(id: string): Token | null {
+    return changetype<Token | null>(store.get("Token", id));
   }
 
   get id(): string {
@@ -107,12 +194,181 @@ export class User extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get daos(): Array<string> {
-    let value = this.get("daos");
+  get dao(): string {
+    let value = this.get("dao");
+    return value!.toString();
+  }
+
+  set dao(value: string) {
+    this.set("dao", Value.fromString(value));
+  }
+
+  get name(): string {
+    let value = this.get("name");
+    return value!.toString();
+  }
+
+  set name(value: string) {
+    this.set("name", Value.fromString(value));
+  }
+
+  get symbol(): string | null {
+    let value = this.get("symbol");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set symbol(value: string | null) {
+    if (!value) {
+      this.unset("symbol");
+    } else {
+      this.set("symbol", Value.fromString(<string>value));
+    }
+  }
+}
+
+export class Member extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("dao", Value.fromStringArray(new Array(0)));
+    this.set("shares", Value.fromBigIntArray(new Array(0)));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save Member entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save Member entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("Member", id.toString(), this);
+    }
+  }
+
+  static load(id: string): Member | null {
+    return changetype<Member | null>(store.get("Member", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get dao(): Array<string> {
+    let value = this.get("dao");
     return value!.toStringArray();
   }
 
-  set daos(value: Array<string>) {
-    this.set("daos", Value.fromStringArray(value));
+  set dao(value: Array<string>) {
+    this.set("dao", Value.fromStringArray(value));
+  }
+
+  get shares(): Array<BigInt> {
+    let value = this.get("shares");
+    return value!.toBigIntArray();
+  }
+
+  set shares(value: Array<BigInt>) {
+    this.set("shares", Value.fromBigIntArray(value));
+  }
+
+  get proposals(): Array<string> | null {
+    let value = this.get("proposals");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set proposals(value: Array<string> | null) {
+    if (!value) {
+      this.unset("proposals");
+    } else {
+      this.set("proposals", Value.fromStringArray(<Array<string>>value));
+    }
+  }
+}
+
+export class Proposal extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("dao", Value.fromString(""));
+    this.set("proposer", Value.fromBytes(Bytes.empty()));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save Proposal entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save Proposal entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("Proposal", id.toString(), this);
+    }
+  }
+
+  static load(id: string): Proposal | null {
+    return changetype<Proposal | null>(store.get("Proposal", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get dao(): string {
+    let value = this.get("dao");
+    return value!.toString();
+  }
+
+  set dao(value: string) {
+    this.set("dao", Value.fromString(value));
+  }
+
+  get proposer(): Bytes {
+    let value = this.get("proposer");
+    return value!.toBytes();
+  }
+
+  set proposer(value: Bytes) {
+    this.set("proposer", Value.fromBytes(value));
+  }
+
+  get sponsored(): boolean {
+    let value = this.get("sponsored");
+    return value!.toBoolean();
+  }
+
+  set sponsored(value: boolean) {
+    this.set("sponsored", Value.fromBoolean(value));
+  }
+
+  get status(): boolean {
+    let value = this.get("status");
+    return value!.toBoolean();
+  }
+
+  set status(value: boolean) {
+    this.set("status", Value.fromBoolean(value));
   }
 }
