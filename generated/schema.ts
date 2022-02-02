@@ -20,6 +20,7 @@ export class DAO extends Entity {
     this.set("founder", Value.fromBytes(Bytes.empty()));
     this.set("docs", Value.fromString(""));
     this.set("votingPeriod", Value.fromBigInt(BigInt.zero()));
+    this.set("gracePeriod", Value.fromBigInt(BigInt.zero()));
     this.set("extensions", Value.fromBytes(Bytes.empty()));
     this.set("quorum", Value.fromBigInt(BigInt.zero()));
     this.set("supermajority", Value.fromBigInt(BigInt.zero()));
@@ -96,13 +97,13 @@ export class DAO extends Entity {
     this.set("votingPeriod", Value.fromBigInt(value));
   }
 
-  get paused(): boolean {
-    let value = this.get("paused");
-    return value!.toBoolean();
+  get gracePeriod(): BigInt {
+    let value = this.get("gracePeriod");
+    return value!.toBigInt();
   }
 
-  set paused(value: boolean) {
-    this.set("paused", Value.fromBoolean(value));
+  set gracePeriod(value: BigInt) {
+    this.set("gracePeriod", Value.fromBigInt(value));
   }
 
   get members(): Array<string> {
@@ -228,6 +229,15 @@ export class Token extends Entity {
       this.set("symbol", Value.fromString(<string>value));
     }
   }
+
+  get paused(): boolean {
+    let value = this.get("paused");
+    return value!.toBoolean();
+  }
+
+  set paused(value: boolean) {
+    this.set("paused", Value.fromBoolean(value));
+  }
 }
 
 export class Member extends Entity {
@@ -235,8 +245,9 @@ export class Member extends Entity {
     super();
     this.set("id", Value.fromString(id));
 
-    this.set("dao", Value.fromStringArray(new Array(0)));
-    this.set("shares", Value.fromBigIntArray(new Array(0)));
+    this.set("address", Value.fromBytes(Bytes.empty()));
+    this.set("dao", Value.fromString(""));
+    this.set("shares", Value.fromBigInt(BigInt.zero()));
   }
 
   save(): void {
@@ -265,22 +276,31 @@ export class Member extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get dao(): Array<string> {
+  get address(): Bytes {
+    let value = this.get("address");
+    return value!.toBytes();
+  }
+
+  set address(value: Bytes) {
+    this.set("address", Value.fromBytes(value));
+  }
+
+  get dao(): string {
     let value = this.get("dao");
-    return value!.toStringArray();
+    return value!.toString();
   }
 
-  set dao(value: Array<string>) {
-    this.set("dao", Value.fromStringArray(value));
+  set dao(value: string) {
+    this.set("dao", Value.fromString(value));
   }
 
-  get shares(): Array<BigInt> {
+  get shares(): BigInt {
     let value = this.get("shares");
-    return value!.toBigIntArray();
+    return value!.toBigInt();
   }
 
-  set shares(value: Array<BigInt>) {
-    this.set("shares", Value.fromBigIntArray(value));
+  set shares(value: BigInt) {
+    this.set("shares", Value.fromBigInt(value));
   }
 
   get proposals(): Array<string> | null {

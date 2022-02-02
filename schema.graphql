@@ -5,7 +5,7 @@ type DAO @entity {
   token: Token! @derivedFrom(field: "dao")
   docs: String!
   votingPeriod: BigInt!
-  paused: Boolean!
+  gracePeriod: BigInt!
   members: [Member!]! @derivedFrom(field: "dao")
   proposals: [Proposal!] @derivedFrom(field: "dao")
   extensions: Bytes!
@@ -18,12 +18,14 @@ type Token @entity {
   dao: DAO!
   name: String!
   symbol: String
+  paused: Boolean!
 }
 
 type Member @entity {
   id: ID!
-  dao: [DAO!]!
-  shares: [BigInt!]!
+  address: Bytes!
+  dao: DAO!
+  shares: BigInt!
   proposals: [Proposal!]
 }
 
@@ -31,6 +33,6 @@ type Proposal @entity {
   id: ID!
   dao: DAO!
   proposer: Bytes!
-  sponsored: Boolean
+  sponsored: Boolean!
   status: Boolean!
 }

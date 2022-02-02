@@ -5,7 +5,7 @@ import {
 } from "../generated/KaliDAOFactory/KaliDAOFactory"
 import { DAO, Token, Member, Proposal} from "../generated/schema"
 import { KaliDAO as KaliDAOTemplate} from '../generated/templates'
-import { NewProposal as NewProposalEvent, ProposalCancelled as ProposalCancelledEvent, ProposalSponsored as ProposalSponsoredEvent, ProposalProcessed as ProposalProcessedEvent, VoteCast as VoteCastEvent, Approval as ApprovalEvent, DelegateChanged as DelegateChangedEvent, PauseFlipped as PauseFlippedEvent, Transfer as TransferEvent} from '../generated/templates/KaliDAO/KaliDAO'
+import { NewProposal as NewProposalEvent, ProposalCancelled as ProposalCancelledEvent, ProposalSponsored as ProposalSponsoredEvent, ProposalProcessed as ProposalProcessedEvent, VoteCast as VoteCastEvent, Approval as ApprovalEvent, DelegateChanged as DelegateChangedEvent, PauseFlipped as PauseFlippedEvent, Transfer as TransferEvent, DelegateVotesChanged, ProposalCancelled} from '../generated/templates/KaliDAO/KaliDAO'
 
 export function handleDAOdeployed(event: DaoDeployedEvent): void {
   KaliDAOTemplate.create(event.params.kaliDAO)
@@ -19,31 +19,68 @@ export function handleDAOdeployed(event: DaoDeployedEvent): void {
   token.dao = daoId
   token.name = event.params.name 
   token.symbol = event.params.symbol 
-  
+  token.paused = event.params.paused
   token.save()
 
   let membersArray = event.params.voters
   let sharesArray = event.params.shares
 
   for(let i=0; i< membersArray.length; i++) {
-    let member = Member.load(membersArray[i].toHexString())
+    let memberId = daoId + '-member-' + membersArray[i].toHexString()
+    let member = new Member(memberId)
     
-    if (member === null) {
-      member = new Member(membersArray[i].toHexString())
-    }
-
-    member.dao.push(daoId)
-    member.shares.push(sharesArray[i])
-
+    member.dao = daoId
+    member.address = membersArray[i]
+    member.shares = sharesArray[i]
     member.save()
   }
 
   dao.founder = event.transaction.from 
   dao.birth = event.block.timestamp 
   dao.docs = event.params.docs 
-  dao.paused = event.params.paused 
-  dao.quorum = event.params.govSettings[0]
-  dao.supermajority = event.params.govSettings[1]
-
+  dao.votingPeriod = event.params.govSettings[0]
+  dao.gracePeriod = event.params.govSettings[1]
+  dao.quorum = event.params.govSettings[2]
+  dao.supermajority = event.params.govSettings[3]
   dao.save()
+}
+
+export function handleApproval(event: ApprovalEvent): void {
+
+}
+
+export function handleDelegateChanged(event: DelegateChangedEvent): void {
+  
+}
+
+export function handleDelegateVotesChanged(event: DelegateVotesChanged): void {
+  
+}
+
+export function handleNewProposal(event: NewProposalEvent): void {
+  
+}
+
+export function handleProposalProcessed(event: ProposalProcessedEvent): void {
+  
+}
+
+export function handleProposalCancelled(event: ProposalCancelled): void {
+  
+}
+
+export function handleProposalSponsored(event: ProposalSponsoredEvent): void {
+  
+}
+
+export function handleVoteCast(event: VoteCastEvent): void {
+  
+}
+
+export function handlePauseFlipped(event: PauseFlippedEvent): void {
+  
+}
+
+export function handleTransfer(event: TransferEvent): void {
+  
 }
