@@ -21,8 +21,6 @@ export class DAO extends Entity {
     this.set("docs", Value.fromString(""));
     this.set("votingPeriod", Value.fromBigInt(BigInt.zero()));
     this.set("gracePeriod", Value.fromBigInt(BigInt.zero()));
-    this.set("extensions", Value.fromBytes(Bytes.empty()));
-    this.set("extensionsData", Value.fromBytes(Bytes.empty()));
     this.set("quorum", Value.fromBigInt(BigInt.zero()));
     this.set("supermajority", Value.fromBigInt(BigInt.zero()));
   }
@@ -133,22 +131,38 @@ export class DAO extends Entity {
     }
   }
 
-  get extensions(): Bytes {
+  get extensions(): string | null {
     let value = this.get("extensions");
-    return value!.toBytes();
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
   }
 
-  set extensions(value: Bytes) {
-    this.set("extensions", Value.fromBytes(value));
+  set extensions(value: string | null) {
+    if (!value) {
+      this.unset("extensions");
+    } else {
+      this.set("extensions", Value.fromString(<string>value));
+    }
   }
 
-  get extensionsData(): Bytes {
+  get extensionsData(): Bytes | null {
     let value = this.get("extensionsData");
-    return value!.toBytes();
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
   }
 
-  set extensionsData(value: Bytes) {
-    this.set("extensionsData", Value.fromBytes(value));
+  set extensionsData(value: Bytes | null) {
+    if (!value) {
+      this.unset("extensionsData");
+    } else {
+      this.set("extensionsData", Value.fromBytes(<Bytes>value));
+    }
   }
 
   get quorum(): BigInt {
@@ -355,6 +369,8 @@ export class Proposal extends Entity {
 
     this.set("dao", Value.fromString(""));
     this.set("proposer", Value.fromBytes(Bytes.empty()));
+    this.set("type", Value.fromString(""));
+    this.set("description", Value.fromString(""));
   }
 
   save(): void {
@@ -401,6 +417,41 @@ export class Proposal extends Entity {
     this.set("proposer", Value.fromBytes(value));
   }
 
+  get type(): string {
+    let value = this.get("type");
+    return value!.toString();
+  }
+
+  set type(value: string) {
+    this.set("type", Value.fromString(value));
+  }
+
+  get description(): string {
+    let value = this.get("description");
+    return value!.toString();
+  }
+
+  set description(value: string) {
+    this.set("description", Value.fromString(value));
+  }
+
+  get sponsor(): Bytes | null {
+    let value = this.get("sponsor");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set sponsor(value: Bytes | null) {
+    if (!value) {
+      this.unset("sponsor");
+    } else {
+      this.set("sponsor", Value.fromBytes(<Bytes>value));
+    }
+  }
+
   get sponsored(): boolean {
     let value = this.get("sponsored");
     return value!.toBoolean();
@@ -417,5 +468,102 @@ export class Proposal extends Entity {
 
   set status(value: boolean) {
     this.set("status", Value.fromBoolean(value));
+  }
+
+  get votes(): Array<string> | null {
+    let value = this.get("votes");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set votes(value: Array<string> | null) {
+    if (!value) {
+      this.unset("votes");
+    } else {
+      this.set("votes", Value.fromStringArray(<Array<string>>value));
+    }
+  }
+}
+
+export class Vote extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("dao", Value.fromString(""));
+    this.set("proposal", Value.fromString(""));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save Vote entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save Vote entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("Vote", id.toString(), this);
+    }
+  }
+
+  static load(id: string): Vote | null {
+    return changetype<Vote | null>(store.get("Vote", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get dao(): string {
+    let value = this.get("dao");
+    return value!.toString();
+  }
+
+  set dao(value: string) {
+    this.set("dao", Value.fromString(value));
+  }
+
+  get proposal(): string {
+    let value = this.get("proposal");
+    return value!.toString();
+  }
+
+  set proposal(value: string) {
+    this.set("proposal", Value.fromString(value));
+  }
+
+  get voter(): Bytes | null {
+    let value = this.get("voter");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set voter(value: Bytes | null) {
+    if (!value) {
+      this.unset("voter");
+    } else {
+      this.set("voter", Value.fromBytes(<Bytes>value));
+    }
+  }
+
+  get vote(): boolean {
+    let value = this.get("vote");
+    return value!.toBoolean();
+  }
+
+  set vote(value: boolean) {
+    this.set("vote", Value.fromBoolean(value));
   }
 }

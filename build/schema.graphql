@@ -8,11 +8,12 @@ type DAO @entity {
   gracePeriod: BigInt!
   members: [Member!]! @derivedFrom(field: "dao")
   proposals: [Proposal!] @derivedFrom(field: "dao")
-  extensions: Bytes!
-  extensionsData: Bytes!
+  extensions: String
+  extensionsData: Bytes
   quorum: BigInt!
   supermajority: BigInt!
 }
+
 type Token @entity {
   id: ID!
   dao: DAO!
@@ -34,6 +35,18 @@ type Proposal @entity {
   id: ID!
   dao: DAO!
   proposer: Bytes!
-  sponsored: Boolean!
-  status: Boolean!
+  type: String!
+  description: String!
+  sponsor: Bytes
+  sponsored: Boolean
+  status: Boolean
+  votes: [Vote!] @derivedFrom(field: "proposal")
+}
+
+type Vote @entity {
+  id: ID!
+  dao: DAO!
+  proposal: Proposal!
+  voter: Bytes
+  vote: Boolean
 }

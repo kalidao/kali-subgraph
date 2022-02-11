@@ -3,7 +3,7 @@ import {
   KaliDAOFactory,
   DAOdeployed as DaoDeployedEvent,
 } from "../generated/KaliDAOFactory/KaliDAOFactory";
-import { DAO, Token, Member, Proposal } from "../generated/schema";
+import { DAO, Token, Member, Proposal, Vote } from "../generated/schema";
 import { KaliDAO as KaliDAOTemplate } from "../generated/templates";
 import {
   NewProposal as NewProposalEvent,
@@ -11,7 +11,7 @@ import {
   ProposalSponsored as ProposalSponsoredEvent,
   ProposalProcessed as ProposalProcessedEvent,
   VoteCast as VoteCastEvent,
-  Approval as ApprovalEvent,
+  // Approval as ApprovalEvent,
   DelegateChanged as DelegateChangedEvent,
   PauseFlipped as PauseFlippedEvent,
   Transfer as TransferEvent,
@@ -53,19 +53,94 @@ export function handleDAOdeployed(event: DaoDeployedEvent): void {
   dao.gracePeriod = event.params.govSettings[1];
   dao.quorum = event.params.govSettings[2];
   dao.supermajority = event.params.govSettings[3];
+
+  // extensions
+  let extensions: string = "";
+  let extensionsArray = event.params.extensions;
+  for (let i = 0; i < extensionsArray.length; i++) {
+    extensions += extensionsArray[i].toHexString() + ",";
+  }
+  dao.extensions = extensions;
+
   dao.save();
 }
 
 // proposal events
-export function handleNewProposal(event: NewProposalEvent): void {}
+export function handleNewProposal(event: NewProposalEvent): void {
+  let daoId = event.address.toHexString();
+  let proposalId = daoId + "-proposal-" + event.params.proposal.toHex();
+  let voteId = proposalId + "-vote-" + event.transaction.hash.toHex();
 
-export function handleProposalProcessed(event: ProposalProcessedEvent): void {}
+  let proposal = new Proposal(proposalId);
+  let vote = new Vote(voteId);
 
-export function handleProposalCancelled(event: ProposalCancelledEvent): void {}
+  proposal.dao = daoId;
+  proposal.proposer = event.params.proposer;
+  proposal.description = event.params.description;
+  proposal.type = event.params.proposalType.toString();
 
-export function handleProposalSponsored(event: ProposalSponsoredEvent): void {}
+  vote.dao = daoId;
+  vote.proposal = proposalId;
 
-export function handleVoteCast(event: VoteCastEvent): void {}
+  vote.save();
+  proposal.save();
+}
+
+export function handleProposalProcessed(event: ProposalProcessedEvent): void {
+  let daoId = event.address.toHexString();
+  let proposalId = daoId + "-proposal-" + event.params.proposal.toHex();
+  let proposal = Proposal.load(proposalId);
+
+  if (proposal == null) {
+    proposal = new Proposal(proposalId);
+  }
+
+  proposal.status = event.params.didProposalPass;
+  proposal.save();
+}
+
+export function handleProposalCancelled(event: ProposalCancelledEvent): void {
+  let daoId = event.address.toHexString();
+  let proposalId = daoId + "-proposal-" + event.params.proposal.toHex();
+  let proposal = Proposal.load(proposalId);
+
+  if (proposal == null) {
+    proposal = new Proposal(proposalId);
+  }
+
+  proposal.proposer = event.params.proposer;
+  proposal.status = false;
+  proposal.save();
+}
+
+export function handleProposalSponsored(event: ProposalSponsoredEvent): void {
+  let daoId = event.address.toHexString();
+  let proposalId = daoId + "-proposal-" + event.params.proposal.toHex();
+  let proposal = Proposal.load(proposalId);
+
+  if (proposal == null) {
+    proposal = new Proposal(proposalId);
+  }
+
+  proposal.sponsor = event.params.sponsor;
+  proposal.sponsored = true;
+  proposal.save();
+}
+
+export function handleVoteCast(event: VoteCastEvent): void {
+  let daoId = event.address.toHexString();
+  let proposalId = daoId + "-proposal-" + event.params.proposal.toHex();
+  let voteId = proposalId + "-vote-" + event.transaction.hash.toHex();
+
+  let vote = new Vote(voteId);
+
+  vote.dao = daoId;
+  vote.proposal = proposalId;
+  vote.voter = event.params.voter;
+  vote.vote = event.params.approve;
+
+  vote.save();
+}
 
 // kalidao token events
 export function handleTransfer(event: TransferEvent): void {
@@ -94,7 +169,7 @@ export function handleTransfer(event: TransferEvent): void {
   memberFrom.save();
 }
 
-export function handleApproval(event: ApprovalEvent): void {}
+// export function handleApproval(event: ApprovalEvent): void {}
 
 export function handleDelegateChanged(event: DelegateChangedEvent): void {}
 
