@@ -148,20 +148,20 @@ export class DAO extends Entity {
     }
   }
 
-  get extensionsData(): Bytes | null {
+  get extensionsData(): string | null {
     let value = this.get("extensionsData");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
-      return value.toBytes();
+      return value.toString();
     }
   }
 
-  set extensionsData(value: Bytes | null) {
+  set extensionsData(value: string | null) {
     if (!value) {
       this.unset("extensionsData");
     } else {
-      this.set("extensionsData", Value.fromBytes(<Bytes>value));
+      this.set("extensionsData", Value.fromString(<string>value));
     }
   }
 

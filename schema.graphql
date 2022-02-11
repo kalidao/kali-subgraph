@@ -9,7 +9,7 @@ type DAO @entity {
   members: [Member!]! @derivedFrom(field: "dao")
   proposals: [Proposal!] @derivedFrom(field: "dao")
   extensions: String
-  extensionsData: Bytes
+  extensionsData: String
   quorum: BigInt!
   supermajority: BigInt!
 }

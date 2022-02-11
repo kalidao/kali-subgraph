@@ -1,4 +1,4 @@
-import { log, Address, BigInt } from "@graphprotocol/graph-ts";
+import { log, Address, BigInt, Bytes } from "@graphprotocol/graph-ts";
 import {
   KaliDAOFactory,
   DAOdeployed as DaoDeployedEvent,
@@ -55,13 +55,19 @@ export function handleDAOdeployed(event: DaoDeployedEvent): void {
   dao.supermajority = event.params.govSettings[3];
 
   // extensions
+  // note - this is probably the worst way to do this
   let extensions: string = "";
+  let extensionsData: string = "";
   let extensionsArray = event.params.extensions;
+  let extensionsBytesArray = event.params.extensionsData;
+
   for (let i = 0; i < extensionsArray.length; i++) {
     extensions += extensionsArray[i].toHexString() + ",";
+    extensionsData += extensionsBytesArray[i].toHexString() + ",";
   }
-  dao.extensions = extensions;
 
+  dao.extensions = extensions;
+  dao.extensionsData = extensionsData;
   dao.save();
 }
 
