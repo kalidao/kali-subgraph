@@ -15,7 +15,7 @@ import {
   DelegateChanged as DelegateChangedEvent,
   PauseFlipped as PauseFlippedEvent,
   Transfer as TransferEvent,
-  DelegateVotesChanged,
+  DelegateVotesChanged as DelegateVotesChangedEvent,
 } from "../generated/templates/KaliDAO/KaliDAO";
 
 export function handleDAOdeployed(event: DaoDeployedEvent): void {
@@ -24,7 +24,7 @@ export function handleDAOdeployed(event: DaoDeployedEvent): void {
   let dao = new DAO(daoId);
 
   // token
-  let tokenId = daoId + "-token-" + event.params.name;
+  let tokenId = daoId + "-token";
   let token = new Token(tokenId);
 
   token.dao = daoId;
@@ -56,12 +56,7 @@ export function handleDAOdeployed(event: DaoDeployedEvent): void {
   dao.save();
 }
 
-export function handleApproval(event: ApprovalEvent): void {}
-
-export function handleDelegateChanged(event: DelegateChangedEvent): void {}
-
-export function handleDelegateVotesChanged(event: DelegateVotesChanged): void {}
-
+// proposal events
 export function handleNewProposal(event: NewProposalEvent): void {}
 
 export function handleProposalProcessed(event: ProposalProcessedEvent): void {}
@@ -72,8 +67,7 @@ export function handleProposalSponsored(event: ProposalSponsoredEvent): void {}
 
 export function handleVoteCast(event: VoteCastEvent): void {}
 
-export function handlePauseFlipped(event: PauseFlippedEvent): void {}
-
+// kalidao token events
 export function handleTransfer(event: TransferEvent): void {
   let daoId = event.address.toHexString();
 
@@ -98,4 +92,27 @@ export function handleTransfer(event: TransferEvent): void {
 
   memberTo.save();
   memberFrom.save();
+}
+
+export function handleApproval(event: ApprovalEvent): void {}
+
+export function handleDelegateChanged(event: DelegateChangedEvent): void {}
+
+export function handleDelegateVotesChanged(
+  event: DelegateVotesChangedEvent
+): void {}
+
+export function handlePauseFlipped(event: PauseFlippedEvent): void {
+  let daoId = event.address.toHexString();
+  let tokenId = daoId + "-token";
+
+  let token = Token.load(tokenId);
+
+  if (token == null) {
+    token = new Token(tokenId);
+  }
+
+  token.paused = event.params.paused;
+
+  token.save();
 }

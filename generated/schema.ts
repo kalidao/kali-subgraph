@@ -313,6 +313,23 @@ export class Member extends Entity {
     this.set("shares", Value.fromBigInt(value));
   }
 
+  get delegate(): Bytes | null {
+    let value = this.get("delegate");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set delegate(value: Bytes | null) {
+    if (!value) {
+      this.unset("delegate");
+    } else {
+      this.set("delegate", Value.fromBytes(<Bytes>value));
+    }
+  }
+
   get proposals(): Array<string> | null {
     let value = this.get("proposals");
     if (!value || value.kind == ValueKind.NULL) {

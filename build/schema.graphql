@@ -26,6 +26,7 @@ type Member @entity {
   address: Bytes!
   dao: DAO!
   shares: BigInt!
+  delegate: Bytes
   proposals: [Proposal!]
 }
 
