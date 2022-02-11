@@ -27,7 +27,7 @@ type Member @entity {
   address: Bytes!
   dao: DAO!
   shares: BigInt!
-  delegate: Bytes
+  delegate: Delegate
   proposals: [Proposal!]
 }
 
@@ -49,4 +49,11 @@ type Vote @entity {
   proposal: Proposal!
   voter: Bytes
   vote: Boolean
+}
+
+type Delegate @entity {
+  id: ID!
+  dao: DAO!
+  balance: BigInt!
+  delegatee: [Member!] @derivedFrom(field: "delegate")
 }

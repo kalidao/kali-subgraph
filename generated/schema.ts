@@ -327,20 +327,20 @@ export class Member extends Entity {
     this.set("shares", Value.fromBigInt(value));
   }
 
-  get delegate(): Bytes | null {
+  get delegate(): string | null {
     let value = this.get("delegate");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
-      return value.toBytes();
+      return value.toString();
     }
   }
 
-  set delegate(value: Bytes | null) {
+  set delegate(value: string | null) {
     if (!value) {
       this.unset("delegate");
     } else {
-      this.set("delegate", Value.fromBytes(<Bytes>value));
+      this.set("delegate", Value.fromString(<string>value));
     }
   }
 
@@ -565,5 +565,76 @@ export class Vote extends Entity {
 
   set vote(value: boolean) {
     this.set("vote", Value.fromBoolean(value));
+  }
+}
+
+export class Delegate extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("dao", Value.fromString(""));
+    this.set("balance", Value.fromBigInt(BigInt.zero()));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save Delegate entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save Delegate entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("Delegate", id.toString(), this);
+    }
+  }
+
+  static load(id: string): Delegate | null {
+    return changetype<Delegate | null>(store.get("Delegate", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get dao(): string {
+    let value = this.get("dao");
+    return value!.toString();
+  }
+
+  set dao(value: string) {
+    this.set("dao", Value.fromString(value));
+  }
+
+  get balance(): BigInt {
+    let value = this.get("balance");
+    return value!.toBigInt();
+  }
+
+  set balance(value: BigInt) {
+    this.set("balance", Value.fromBigInt(value));
+  }
+
+  get delegatee(): Array<string> | null {
+    let value = this.get("delegatee");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set delegatee(value: Array<string> | null) {
+    if (!value) {
+      this.unset("delegatee");
+    } else {
+      this.set("delegatee", Value.fromStringArray(<Array<string>>value));
+    }
   }
 }

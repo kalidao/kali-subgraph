@@ -3,7 +3,14 @@ import {
   KaliDAOFactory,
   DAOdeployed as DaoDeployedEvent,
 } from "../generated/KaliDAOFactory/KaliDAOFactory";
-import { DAO, Token, Member, Proposal, Vote } from "../generated/schema";
+import {
+  DAO,
+  Token,
+  Member,
+  Proposal,
+  Vote,
+  Delegate,
+} from "../generated/schema";
 import { KaliDAO as KaliDAOTemplate } from "../generated/templates";
 import {
   NewProposal as NewProposalEvent,
@@ -177,11 +184,43 @@ export function handleTransfer(event: TransferEvent): void {
 
 // export function handleApproval(event: ApprovalEvent): void {}
 
-export function handleDelegateChanged(event: DelegateChangedEvent): void {}
+export function handleDelegateChanged(event: DelegateChangedEvent): void {
+  let daoId = event.address.toHexString();
+  let memberId = daoId + "-member-" + event.params.delegator.toHexString();
+  let delegateId = daoId + "-delegate-" + event.params.toDelegate.toHexString();
+
+  let delegate = Delegate.load(delegateId);
+
+  if (delegate == null) {
+    delegate = new Delegate(delegateId);
+  }
+
+  let member = Member.load(memberId);
+
+  if (member == null) {
+    member = new Member(memberId);
+  }
+
+  member.delegate = delegateId;
+  delegate.dao = daoId;
+
+  member.save();
+  delegate.save();
+}
 
 export function handleDelegateVotesChanged(
   event: DelegateVotesChangedEvent
-): void {}
+): void {
+  let daoId = event.address.toHexString();
+  let delegateId = daoId + "-delegate-" + event.params.delegate.toHexString();
+  let delegate = Delegate.load(delegateId);
+
+  if (delegate == null) {
+    delegate = new Delegate(delegateId);
+  }
+
+  delegate.balance = event.params.newBalance;
+}
 
 export function handlePauseFlipped(event: PauseFlippedEvent): void {
   let daoId = event.address.toHexString();
