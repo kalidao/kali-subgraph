@@ -16,7 +16,6 @@ import {
   PauseFlipped as PauseFlippedEvent,
   Transfer as TransferEvent,
   DelegateVotesChanged,
-  ProposalCancelled,
 } from "../generated/templates/KaliDAO/KaliDAO";
 
 export function handleDAOdeployed(event: DaoDeployedEvent): void {
@@ -67,7 +66,7 @@ export function handleNewProposal(event: NewProposalEvent): void {}
 
 export function handleProposalProcessed(event: ProposalProcessedEvent): void {}
 
-export function handleProposalCancelled(event: ProposalCancelled): void {}
+export function handleProposalCancelled(event: ProposalCancelledEvent): void {}
 
 export function handleProposalSponsored(event: ProposalSponsoredEvent): void {}
 
@@ -76,7 +75,7 @@ export function handleVoteCast(event: VoteCastEvent): void {}
 export function handlePauseFlipped(event: PauseFlippedEvent): void {}
 
 export function handleTransfer(event: TransferEvent): void {
-  let daoId = event.transaction.from.toHexString();
+  let daoId = event.address.toHexString();
 
   let memberFromId = daoId + "-member-" + event.params.from.toHexString();
   let memberToId = daoId + "-member-" + event.params.to.toHexString();
@@ -84,15 +83,19 @@ export function handleTransfer(event: TransferEvent): void {
   let memberFrom = Member.load(memberFromId);
   let memberTo = Member.load(memberToId);
 
+  if (memberFrom == null) {
+    memberFrom = new Member(memberFromId);
+  }
+
   if (memberTo == null) {
     memberTo = new Member(memberToId);
   }
 
-  memberFrom?.shares = memberFrom?.shares - event.params.amount;
-  memberTo.shares = memberTo.shares + event.params.amount;
+  memberFrom.shares = memberFrom.shares.minus(event.params.amount);
+  memberTo.shares = memberTo.shares.plus(event.params.amount);
   memberTo.address = event.params.to;
   memberTo.dao = daoId;
 
   memberTo.save();
-  memberFrom?.save();
+  memberFrom.save();
 }
