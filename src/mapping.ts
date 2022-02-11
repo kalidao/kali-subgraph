@@ -46,7 +46,7 @@ export function handleDAOdeployed(event: DaoDeployedEvent): void {
 }
 
 export function handleApproval(event: ApprovalEvent): void {
-
+  
 }
 
 export function handleDelegateChanged(event: DelegateChangedEvent): void {

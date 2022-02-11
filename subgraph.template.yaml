@@ -2,15 +2,15 @@ specVersion: 0.0.2
 description: KaliDAO
 repository: https://github.com/nerderlyne/kali-subgraph
 schema:
-  file: schema.graphql
+  file: ./schema.graphql
 dataSources:
   - kind: ethereum/contract
     name: KaliDAOFactory
-    network: rinkeby
+    network: {{network}}
     source:
-      address: "0x58AC6a1Dd37b374Eb98FE751fc64502bB04Fb80f"
+      address: {{address}}
       abi: KaliDAOFactory
-      startBlock: 10116749
+      startBlock: {{startBlock}}
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -21,16 +21,15 @@ dataSources:
         - Member
       abis:
         - name: KaliDAOFactory
-          file: KaliDAOFactory/abis/KaliDAOFactory.json
+          file: ./abis/KaliDAOFactory.json
       eventHandlers:
-        - event: DAOdeployed(indexed
-            address,string,string,string,bool,address[],bytes[],address[],uint256[],uint32[16])
+        - event: DAOdeployed(indexed address,string,string,string,bool,address[],bytes[],address[],uint256[],uint32[16])
           handler: handleDAOdeployed
-      file: KaliDAOFactory/KaliDAOFactory.wasm
+      file: ./src/mapping.ts
 templates:
   - name: KaliDAO
     kind: ethereum/contract
-    network: rinkeby
+    network: {{network}}
     source:
       abi: KaliDAO
     mapping:
@@ -44,7 +43,7 @@ templates:
         - Proposal
       abis:
         - name: KaliDAO
-          file: KaliDAO/abis/KaliDAO.json
+          file: ./abis/KaliDAO.json
       eventHandlers:
         - event: Approval(indexed address,indexed address,uint256)
           handler: handleApproval
@@ -52,8 +51,7 @@ templates:
           handler: handleDelegateChanged
         - event: DelegateVotesChanged(indexed address,uint256,uint256)
           handler: handleDelegateVotesChanged
-        - event: NewProposal(indexed address,indexed uint256,indexed
-            uint8,string,address[],uint256[],bytes[])
+        - event: NewProposal(indexed address,indexed uint256,indexed uint8,string,address[],uint256[],bytes[])
           handler: handleNewProposal
         - event: ProposalProcessed(indexed uint256,indexed bool)
           handler: handleProposalProcessed
@@ -67,4 +65,4 @@ templates:
           handler: handlePauseFlipped
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleTransfer
-      file: KaliDAOFactory/KaliDAOFactory.wasm
+      file: ./src/mapping.ts

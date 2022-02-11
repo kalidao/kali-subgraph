@@ -1,16 +1,21 @@
 {
   "name": "kalidao",
-  "license": "GPL 3.0",
+  "license": "GPL-3.0-or-later",
   "scripts": {
     "codegen": "graph codegen",
     "build": "graph build",
     "deploy": "graph deploy --node https://api.studio.thegraph.com/deploy/ kalidao",
     "create-local": "graph create --node http://localhost:8020/ kalidao",
     "remove-local": "graph remove --node http://localhost:8020/ kalidao",
-    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 kalidao"
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 kalidao",
+    "prepare:mainnet": "mustache config/mainnet.json subgraph.template.yaml > subgraph.yaml",
+    "prepare:rinkeby": "mustache config/rinkeby.json subgraph.template.yaml > subgraph.yaml",
+    "prepare:polygon": "mustache config/polygon.json subgraph.template.yaml > subgraph.yaml",
+    "prepare:arbitrum": "mustache config/arbitrum.json subgraph.template.yaml > subgraph.yaml"
   },
   "dependencies": {
     "@graphprotocol/graph-cli": "0.25.1",
-    "@graphprotocol/graph-ts": "0.24.1"
+    "@graphprotocol/graph-ts": "0.24.1",
+    "mustache": "^4.2.0"
   }
 }

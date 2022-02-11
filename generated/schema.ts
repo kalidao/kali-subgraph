@@ -22,6 +22,7 @@ export class DAO extends Entity {
     this.set("votingPeriod", Value.fromBigInt(BigInt.zero()));
     this.set("gracePeriod", Value.fromBigInt(BigInt.zero()));
     this.set("extensions", Value.fromBytes(Bytes.empty()));
+    this.set("extensionsData", Value.fromBytes(Bytes.empty()));
     this.set("quorum", Value.fromBigInt(BigInt.zero()));
     this.set("supermajority", Value.fromBigInt(BigInt.zero()));
   }
@@ -139,6 +140,15 @@ export class DAO extends Entity {
 
   set extensions(value: Bytes) {
     this.set("extensions", Value.fromBytes(value));
+  }
+
+  get extensionsData(): Bytes {
+    let value = this.get("extensionsData");
+    return value!.toBytes();
+  }
+
+  set extensionsData(value: Bytes) {
+    this.set("extensionsData", Value.fromBytes(value));
   }
 
   get quorum(): BigInt {
