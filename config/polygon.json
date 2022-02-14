@@ -1,5 +1,5 @@
 {
-    "network": "polygon/matic",
+    "network": "matic",
     "address": "0x3f15724d409444743613AdaFA4A4a4B49D9Ab2F9",
     "startBlock": "24590530"
 }
