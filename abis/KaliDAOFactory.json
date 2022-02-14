@@ -16,6 +16,11 @@
 		"type": "constructor"
 	},
 	{
+		"inputs": [],
+		"name": "NullDeploy",
+		"type": "error"
+	},
+	{
 		"anonymous": false,
 		"inputs": [
 			{
@@ -142,19 +147,6 @@
 		"type": "function"
 	},
 	{
-		"inputs": [],
-		"name": "kaliMaster",
-		"outputs": [
-			{
-				"internalType": "address payable",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
 		"inputs": [
 			{
 				"internalType": "bytes[]",
@@ -170,20 +162,7 @@
 				"type": "bytes[]"
 			}
 		],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "ricardianLLC",
-		"outputs": [
-			{
-				"internalType": "contract IRicardianLLC",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
+		"stateMutability": "payable",
 		"type": "function"
 	}
 ]
