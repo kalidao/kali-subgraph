@@ -91,7 +91,7 @@ export function handleNewProposal(event: NewProposalEvent): void {
   proposal.proposer = event.params.proposer;
   proposal.description = event.params.description;
   proposal.type = event.params.proposalType.toString();
-
+  proposal.creationTime = event.block.timestamp;
   vote.dao = daoId;
   vote.proposal = proposalId;
 
@@ -137,6 +137,7 @@ export function handleProposalSponsored(event: ProposalSponsoredEvent): void {
 
   proposal.sponsor = event.params.sponsor;
   proposal.sponsored = true;
+
   proposal.save();
 }
 
@@ -220,6 +221,7 @@ export function handleDelegateVotesChanged(
   }
 
   delegate.balance = event.params.newBalance;
+  delegate.save();
 }
 
 export function handlePauseFlipped(event: PauseFlippedEvent): void {

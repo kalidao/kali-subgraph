@@ -371,6 +371,7 @@ export class Proposal extends Entity {
     this.set("proposer", Value.fromBytes(Bytes.empty()));
     this.set("type", Value.fromString(""));
     this.set("description", Value.fromString(""));
+    this.set("creationTime", Value.fromBigInt(BigInt.zero()));
   }
 
   save(): void {
@@ -485,6 +486,15 @@ export class Proposal extends Entity {
     } else {
       this.set("votes", Value.fromStringArray(<Array<string>>value));
     }
+  }
+
+  get creationTime(): BigInt {
+    let value = this.get("creationTime");
+    return value!.toBigInt();
+  }
+
+  set creationTime(value: BigInt) {
+    this.set("creationTime", Value.fromBigInt(value));
   }
 }
 

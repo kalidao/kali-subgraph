@@ -41,6 +41,7 @@ type Proposal @entity {
   sponsored: Boolean
   status: Boolean
   votes: [Vote!] @derivedFrom(field: "proposal")
+  creationTime: BigInt!
 }
 
 type Vote @entity {
