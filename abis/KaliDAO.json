@@ -465,7 +465,7 @@
 				"type": "bool"
 			}
 		],
-		"stateMutability": "nonpayable",
+		"stateMutability": "payable",
 		"type": "function"
 	},
 	{
@@ -497,7 +497,7 @@
 		],
 		"name": "burn",
 		"outputs": [],
-		"stateMutability": "nonpayable",
+		"stateMutability": "payable",
 		"type": "function"
 	},
 	{
@@ -515,7 +515,7 @@
 		],
 		"name": "burnFrom",
 		"outputs": [],
-		"stateMutability": "nonpayable",
+		"stateMutability": "payable",
 		"type": "function"
 	},
 	{
@@ -533,7 +533,7 @@
 		],
 		"name": "burnShares",
 		"outputs": [],
-		"stateMutability": "nonpayable",
+		"stateMutability": "payable",
 		"type": "function"
 	},
 	{
@@ -580,7 +580,7 @@
 		],
 		"name": "cancelProposal",
 		"outputs": [],
-		"stateMutability": "nonpayable",
+		"stateMutability": "payable",
 		"type": "function"
 	},
 	{
@@ -635,7 +635,7 @@
 		],
 		"name": "delegate",
 		"outputs": [],
-		"stateMutability": "nonpayable",
+		"stateMutability": "payable",
 		"type": "function"
 	},
 	{
@@ -673,7 +673,7 @@
 		],
 		"name": "delegateBySig",
 		"outputs": [],
-		"stateMutability": "nonpayable",
+		"stateMutability": "payable",
 		"type": "function"
 	},
 	{
@@ -706,19 +706,6 @@
 			}
 		],
 		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "proposal",
-				"type": "uint256"
-			}
-		],
-		"name": "escapeProposal",
-		"outputs": [],
-		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -912,7 +899,7 @@
 		],
 		"name": "mintShares",
 		"outputs": [],
-		"stateMutability": "nonpayable",
+		"stateMutability": "payable",
 		"type": "function"
 	},
 	{
@@ -931,7 +918,7 @@
 				"type": "bytes[]"
 			}
 		],
-		"stateMutability": "nonpayable",
+		"stateMutability": "payable",
 		"type": "function"
 	},
 	{
@@ -1150,7 +1137,7 @@
 		],
 		"name": "permit",
 		"outputs": [],
-		"stateMutability": "nonpayable",
+		"stateMutability": "payable",
 		"type": "function"
 	},
 	{
@@ -1174,7 +1161,7 @@
 				"type": "bytes[]"
 			}
 		],
-		"stateMutability": "nonpayable",
+		"stateMutability": "payable",
 		"type": "function"
 	},
 	{
@@ -1318,7 +1305,7 @@
 				"type": "uint256"
 			}
 		],
-		"stateMutability": "nonpayable",
+		"stateMutability": "payable",
 		"type": "function"
 	},
 	{
@@ -1344,7 +1331,7 @@
 		],
 		"name": "sponsorProposal",
 		"outputs": [],
-		"stateMutability": "nonpayable",
+		"stateMutability": "payable",
 		"type": "function"
 	},
 	{
@@ -1407,7 +1394,7 @@
 				"type": "bool"
 			}
 		],
-		"stateMutability": "nonpayable",
+		"stateMutability": "payable",
 		"type": "function"
 	},
 	{
@@ -1436,53 +1423,7 @@
 				"type": "bool"
 			}
 		],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "extension",
-				"type": "address"
-			}
-		],
-		"name": "updateExtension",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint32",
-				"name": "votingPeriod_",
-				"type": "uint32"
-			},
-			{
-				"internalType": "uint32",
-				"name": "gracePeriod_",
-				"type": "uint32"
-			},
-			{
-				"internalType": "uint32",
-				"name": "quorum_",
-				"type": "uint32"
-			},
-			{
-				"internalType": "uint32",
-				"name": "supermajority_",
-				"type": "uint32"
-			},
-			{
-				"internalType": "bool",
-				"name": "flipPause",
-				"type": "bool"
-			}
-		],
-		"name": "updateGovernance",
-		"outputs": [],
-		"stateMutability": "nonpayable",
+		"stateMutability": "payable",
 		"type": "function"
 	},
 	{
@@ -1500,7 +1441,7 @@
 		],
 		"name": "vote",
 		"outputs": [],
-		"stateMutability": "nonpayable",
+		"stateMutability": "payable",
 		"type": "function"
 	},
 	{
@@ -1538,7 +1479,7 @@
 		],
 		"name": "voteBySig",
 		"outputs": [],
-		"stateMutability": "nonpayable",
+		"stateMutability": "payable",
 		"type": "function"
 	},
 	{
