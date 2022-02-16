@@ -8,9 +8,9 @@ dataSources:
     name: KaliDAOFactory
     network: rinkeby
     source:
-      address: "0x58AC6a1Dd37b374Eb98FE751fc64502bB04Fb80f"
+      address: "0x1aAF0d0305B8e5685bCA94F35409547fA4bCD548"
       abi: KaliDAOFactory
-      startBlock: 10116749
+      startBlock: 10164433
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
