@@ -6,11 +6,11 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: KaliDAOFactory
-    network: mainnet
+    network: arbitrum-one
     source:
-      address: "0x8bD48C45d40724E8424C3aAa4097257A38A98024"
+      address: "0x045cbcBA76a7EcF82d0f6B5DCc0881B3C12E37d0"
       abi: KaliDAOFactory
-      startBlock: 14202779
+      startBlock: 6018052
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -30,7 +30,7 @@ dataSources:
 templates:
   - name: KaliDAO
     kind: ethereum/contract
-    network: mainnet
+    network: arbitrum-one
     source:
       abi: KaliDAO
     mapping:

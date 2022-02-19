@@ -29,19 +29,6 @@ export function handleDAOdeployed(event: DaoDeployedEvent): void {
   token.paused = event.params.paused;
   token.save();
 
-  const membersArray = event.params.voters;
-  const sharesArray = event.params.shares;
-
-  for (let i = 0; i < membersArray.length; i++) {
-    const memberId = daoId + '-member-' + membersArray[i].toHexString();
-    const member = new Member(memberId);
-
-    member.dao = daoId;
-    member.address = membersArray[i];
-    member.shares = sharesArray[i];
-    member.save();
-  }
-
   dao.founder = event.transaction.from;
   dao.birth = event.block.timestamp;
   dao.docs = event.params.docs;

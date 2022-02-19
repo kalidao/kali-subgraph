@@ -19,7 +19,9 @@
   "dependencies": {
     "@graphprotocol/graph-cli": "0.25.1",
     "@graphprotocol/graph-ts": "0.24.1",
+    "ganache-cli": "^6.12.2",
     "mustache": "^4.2.0",
+    "truffle": "^5.5.0",
     "typescript": "^4.5.5"
   },
   "devDependencies": {
