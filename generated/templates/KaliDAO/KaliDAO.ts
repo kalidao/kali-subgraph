@@ -307,40 +307,6 @@ export class KaliDAO__getProposalArraysResult {
   }
 }
 
-export class KaliDAO__processProposalResult {
-  value0: boolean;
-  value1: Array<Bytes>;
-
-  constructor(value0: boolean, value1: Array<Bytes>) {
-    this.value0 = value0;
-    this.value1 = value1;
-  }
-
-  toMap(): TypedMap<string, ethereum.Value> {
-    let map = new TypedMap<string, ethereum.Value>();
-    map.set("value0", ethereum.Value.fromBoolean(this.value0));
-    map.set("value1", ethereum.Value.fromBytesArray(this.value1));
-    return map;
-  }
-}
-
-export class KaliDAO__proposalStatesResult {
-  value0: boolean;
-  value1: boolean;
-
-  constructor(value0: boolean, value1: boolean) {
-    this.value0 = value0;
-    this.value1 = value1;
-  }
-
-  toMap(): TypedMap<string, ethereum.Value> {
-    let map = new TypedMap<string, ethereum.Value>();
-    map.set("value0", ethereum.Value.fromBoolean(this.value0));
-    map.set("value1", ethereum.Value.fromBoolean(this.value1));
-    return map;
-  }
-}
-
 export class KaliDAO__proposalsResult {
   value0: i32;
   value1: string;
@@ -384,93 +350,26 @@ export class KaliDAO__proposalsResult {
   }
 }
 
+export class KaliDAO__proposalStatesResult {
+  value0: boolean;
+  value1: boolean;
+
+  constructor(value0: boolean, value1: boolean) {
+    this.value0 = value0;
+    this.value1 = value1;
+  }
+
+  toMap(): TypedMap<string, ethereum.Value> {
+    let map = new TypedMap<string, ethereum.Value>();
+    map.set("value0", ethereum.Value.fromBoolean(this.value0));
+    map.set("value1", ethereum.Value.fromBoolean(this.value1));
+    return map;
+  }
+}
+
 export class KaliDAO extends ethereum.SmartContract {
   static bind(address: Address): KaliDAO {
     return new KaliDAO("KaliDAO", address);
-  }
-
-  DELEGATION_TYPEHASH(): Bytes {
-    let result = super.call(
-      "DELEGATION_TYPEHASH",
-      "DELEGATION_TYPEHASH():(bytes32)",
-      []
-    );
-
-    return result[0].toBytes();
-  }
-
-  try_DELEGATION_TYPEHASH(): ethereum.CallResult<Bytes> {
-    let result = super.tryCall(
-      "DELEGATION_TYPEHASH",
-      "DELEGATION_TYPEHASH():(bytes32)",
-      []
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBytes());
-  }
-
-  DOMAIN_SEPARATOR(): Bytes {
-    let result = super.call(
-      "DOMAIN_SEPARATOR",
-      "DOMAIN_SEPARATOR():(bytes32)",
-      []
-    );
-
-    return result[0].toBytes();
-  }
-
-  try_DOMAIN_SEPARATOR(): ethereum.CallResult<Bytes> {
-    let result = super.tryCall(
-      "DOMAIN_SEPARATOR",
-      "DOMAIN_SEPARATOR():(bytes32)",
-      []
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBytes());
-  }
-
-  PERMIT_TYPEHASH(): Bytes {
-    let result = super.call(
-      "PERMIT_TYPEHASH",
-      "PERMIT_TYPEHASH():(bytes32)",
-      []
-    );
-
-    return result[0].toBytes();
-  }
-
-  try_PERMIT_TYPEHASH(): ethereum.CallResult<Bytes> {
-    let result = super.tryCall(
-      "PERMIT_TYPEHASH",
-      "PERMIT_TYPEHASH():(bytes32)",
-      []
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBytes());
-  }
-
-  VOTE_HASH(): Bytes {
-    let result = super.call("VOTE_HASH", "VOTE_HASH():(bytes32)", []);
-
-    return result[0].toBytes();
-  }
-
-  try_VOTE_HASH(): ethereum.CallResult<Bytes> {
-    let result = super.tryCall("VOTE_HASH", "VOTE_HASH():(bytes32)", []);
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBytes());
   }
 
   allowance(param0: Address, param1: Address): BigInt {
@@ -494,27 +393,6 @@ export class KaliDAO extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toBigInt());
-  }
-
-  approve(spender: Address, amount: BigInt): boolean {
-    let result = super.call("approve", "approve(address,uint256):(bool)", [
-      ethereum.Value.fromAddress(spender),
-      ethereum.Value.fromUnsignedBigInt(amount)
-    ]);
-
-    return result[0].toBoolean();
-  }
-
-  try_approve(spender: Address, amount: BigInt): ethereum.CallResult<boolean> {
-    let result = super.tryCall("approve", "approve(address,uint256):(bool)", [
-      ethereum.Value.fromAddress(spender),
-      ethereum.Value.fromUnsignedBigInt(amount)
-    ]);
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBoolean());
   }
 
   balanceOf(param0: Address): BigInt {
@@ -607,6 +485,29 @@ export class KaliDAO extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 
+  DELEGATION_TYPEHASH(): Bytes {
+    let result = super.call(
+      "DELEGATION_TYPEHASH",
+      "DELEGATION_TYPEHASH():(bytes32)",
+      []
+    );
+
+    return result[0].toBytes();
+  }
+
+  try_DELEGATION_TYPEHASH(): ethereum.CallResult<Bytes> {
+    let result = super.tryCall(
+      "DELEGATION_TYPEHASH",
+      "DELEGATION_TYPEHASH():(bytes32)",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBytes());
+  }
+
   docs(): string {
     let result = super.call("docs", "docs():(string)", []);
 
@@ -620,6 +521,29 @@ export class KaliDAO extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toString());
+  }
+
+  DOMAIN_SEPARATOR(): Bytes {
+    let result = super.call(
+      "DOMAIN_SEPARATOR",
+      "DOMAIN_SEPARATOR():(bytes32)",
+      []
+    );
+
+    return result[0].toBytes();
+  }
+
+  try_DOMAIN_SEPARATOR(): ethereum.CallResult<Bytes> {
+    let result = super.tryCall(
+      "DOMAIN_SEPARATOR",
+      "DOMAIN_SEPARATOR():(bytes32)",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBytes());
   }
 
   extensions(param0: Address): boolean {
@@ -765,25 +689,6 @@ export class KaliDAO extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toBigInt());
-  }
-
-  multicall(data: Array<Bytes>): Array<Bytes> {
-    let result = super.call("multicall", "multicall(bytes[]):(bytes[])", [
-      ethereum.Value.fromBytesArray(data)
-    ]);
-
-    return result[0].toBytesArray();
-  }
-
-  try_multicall(data: Array<Bytes>): ethereum.CallResult<Array<Bytes>> {
-    let result = super.tryCall("multicall", "multicall(bytes[]):(bytes[])", [
-      ethereum.Value.fromBytesArray(data)
-    ]);
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBytesArray());
   }
 
   name(): string {
@@ -995,37 +900,27 @@ export class KaliDAO extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBoolean());
   }
 
-  processProposal(proposal: BigInt): KaliDAO__processProposalResult {
+  PERMIT_TYPEHASH(): Bytes {
     let result = super.call(
-      "processProposal",
-      "processProposal(uint256):(bool,bytes[])",
-      [ethereum.Value.fromUnsignedBigInt(proposal)]
+      "PERMIT_TYPEHASH",
+      "PERMIT_TYPEHASH():(bytes32)",
+      []
     );
 
-    return new KaliDAO__processProposalResult(
-      result[0].toBoolean(),
-      result[1].toBytesArray()
-    );
+    return result[0].toBytes();
   }
 
-  try_processProposal(
-    proposal: BigInt
-  ): ethereum.CallResult<KaliDAO__processProposalResult> {
+  try_PERMIT_TYPEHASH(): ethereum.CallResult<Bytes> {
     let result = super.tryCall(
-      "processProposal",
-      "processProposal(uint256):(bool,bytes[])",
-      [ethereum.Value.fromUnsignedBigInt(proposal)]
+      "PERMIT_TYPEHASH",
+      "PERMIT_TYPEHASH():(bytes32)",
+      []
     );
     if (result.reverted) {
       return new ethereum.CallResult();
     }
     let value = result.value;
-    return ethereum.CallResult.fromValue(
-      new KaliDAO__processProposalResult(
-        value[0].toBoolean(),
-        value[1].toBytesArray()
-      )
-    );
+    return ethereum.CallResult.fromValue(value[0].toBytes());
   }
 
   proposalCount(): BigInt {
@@ -1045,6 +940,47 @@ export class KaliDAO extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
+  proposals(param0: BigInt): KaliDAO__proposalsResult {
+    let result = super.call(
+      "proposals",
+      "proposals(uint256):(uint8,string,uint256,uint96,uint96,uint32,address)",
+      [ethereum.Value.fromUnsignedBigInt(param0)]
+    );
+
+    return new KaliDAO__proposalsResult(
+      result[0].toI32(),
+      result[1].toString(),
+      result[2].toBigInt(),
+      result[3].toBigInt(),
+      result[4].toBigInt(),
+      result[5].toBigInt(),
+      result[6].toAddress()
+    );
+  }
+
+  try_proposals(param0: BigInt): ethereum.CallResult<KaliDAO__proposalsResult> {
+    let result = super.tryCall(
+      "proposals",
+      "proposals(uint256):(uint8,string,uint256,uint96,uint96,uint32,address)",
+      [ethereum.Value.fromUnsignedBigInt(param0)]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(
+      new KaliDAO__proposalsResult(
+        value[0].toI32(),
+        value[1].toString(),
+        value[2].toBigInt(),
+        value[3].toBigInt(),
+        value[4].toBigInt(),
+        value[5].toBigInt(),
+        value[6].toAddress()
+      )
+    );
   }
 
   proposalStates(param0: BigInt): KaliDAO__proposalStatesResult {
@@ -1101,94 +1037,6 @@ export class KaliDAO extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toI32());
-  }
-
-  proposals(param0: BigInt): KaliDAO__proposalsResult {
-    let result = super.call(
-      "proposals",
-      "proposals(uint256):(uint8,string,uint256,uint96,uint96,uint32,address)",
-      [ethereum.Value.fromUnsignedBigInt(param0)]
-    );
-
-    return new KaliDAO__proposalsResult(
-      result[0].toI32(),
-      result[1].toString(),
-      result[2].toBigInt(),
-      result[3].toBigInt(),
-      result[4].toBigInt(),
-      result[5].toBigInt(),
-      result[6].toAddress()
-    );
-  }
-
-  try_proposals(param0: BigInt): ethereum.CallResult<KaliDAO__proposalsResult> {
-    let result = super.tryCall(
-      "proposals",
-      "proposals(uint256):(uint8,string,uint256,uint96,uint96,uint32,address)",
-      [ethereum.Value.fromUnsignedBigInt(param0)]
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(
-      new KaliDAO__proposalsResult(
-        value[0].toI32(),
-        value[1].toString(),
-        value[2].toBigInt(),
-        value[3].toBigInt(),
-        value[4].toBigInt(),
-        value[5].toBigInt(),
-        value[6].toAddress()
-      )
-    );
-  }
-
-  propose(
-    proposalType: i32,
-    description: string,
-    accounts: Array<Address>,
-    amounts: Array<BigInt>,
-    payloads: Array<Bytes>
-  ): BigInt {
-    let result = super.call(
-      "propose",
-      "propose(uint8,string,address[],uint256[],bytes[]):(uint256)",
-      [
-        ethereum.Value.fromUnsignedBigInt(BigInt.fromI32(proposalType)),
-        ethereum.Value.fromString(description),
-        ethereum.Value.fromAddressArray(accounts),
-        ethereum.Value.fromUnsignedBigIntArray(amounts),
-        ethereum.Value.fromBytesArray(payloads)
-      ]
-    );
-
-    return result[0].toBigInt();
-  }
-
-  try_propose(
-    proposalType: i32,
-    description: string,
-    accounts: Array<Address>,
-    amounts: Array<BigInt>,
-    payloads: Array<Bytes>
-  ): ethereum.CallResult<BigInt> {
-    let result = super.tryCall(
-      "propose",
-      "propose(uint8,string,address[],uint256[],bytes[]):(uint256)",
-      [
-        ethereum.Value.fromUnsignedBigInt(BigInt.fromI32(proposalType)),
-        ethereum.Value.fromString(description),
-        ethereum.Value.fromAddressArray(accounts),
-        ethereum.Value.fromUnsignedBigIntArray(amounts),
-        ethereum.Value.fromBytesArray(payloads)
-      ]
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
   quorum(): BigInt {
@@ -1251,60 +1099,19 @@ export class KaliDAO extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
-  transfer(to: Address, amount: BigInt): boolean {
-    let result = super.call("transfer", "transfer(address,uint256):(bool)", [
-      ethereum.Value.fromAddress(to),
-      ethereum.Value.fromUnsignedBigInt(amount)
-    ]);
+  VOTE_HASH(): Bytes {
+    let result = super.call("VOTE_HASH", "VOTE_HASH():(bytes32)", []);
 
-    return result[0].toBoolean();
+    return result[0].toBytes();
   }
 
-  try_transfer(to: Address, amount: BigInt): ethereum.CallResult<boolean> {
-    let result = super.tryCall("transfer", "transfer(address,uint256):(bool)", [
-      ethereum.Value.fromAddress(to),
-      ethereum.Value.fromUnsignedBigInt(amount)
-    ]);
+  try_VOTE_HASH(): ethereum.CallResult<Bytes> {
+    let result = super.tryCall("VOTE_HASH", "VOTE_HASH():(bytes32)", []);
     if (result.reverted) {
       return new ethereum.CallResult();
     }
     let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBoolean());
-  }
-
-  transferFrom(from: Address, to: Address, amount: BigInt): boolean {
-    let result = super.call(
-      "transferFrom",
-      "transferFrom(address,address,uint256):(bool)",
-      [
-        ethereum.Value.fromAddress(from),
-        ethereum.Value.fromAddress(to),
-        ethereum.Value.fromUnsignedBigInt(amount)
-      ]
-    );
-
-    return result[0].toBoolean();
-  }
-
-  try_transferFrom(
-    from: Address,
-    to: Address,
-    amount: BigInt
-  ): ethereum.CallResult<boolean> {
-    let result = super.tryCall(
-      "transferFrom",
-      "transferFrom(address,address,uint256):(bool)",
-      [
-        ethereum.Value.fromAddress(from),
-        ethereum.Value.fromAddress(to),
-        ethereum.Value.fromUnsignedBigInt(amount)
-      ]
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBoolean());
+    return ethereum.CallResult.fromValue(value[0].toBytes());
   }
 
   voted(param0: BigInt, param1: Address): boolean {
@@ -1632,36 +1439,6 @@ export class DelegateBySigCall__Outputs {
   _call: DelegateBySigCall;
 
   constructor(call: DelegateBySigCall) {
-    this._call = call;
-  }
-}
-
-export class EscapeProposalCall extends ethereum.Call {
-  get inputs(): EscapeProposalCall__Inputs {
-    return new EscapeProposalCall__Inputs(this);
-  }
-
-  get outputs(): EscapeProposalCall__Outputs {
-    return new EscapeProposalCall__Outputs(this);
-  }
-}
-
-export class EscapeProposalCall__Inputs {
-  _call: EscapeProposalCall;
-
-  constructor(call: EscapeProposalCall) {
-    this._call = call;
-  }
-
-  get proposal(): BigInt {
-    return this._call.inputValues[0].value.toBigInt();
-  }
-}
-
-export class EscapeProposalCall__Outputs {
-  _call: EscapeProposalCall;
-
-  constructor(call: EscapeProposalCall) {
     this._call = call;
   }
 }
@@ -2045,82 +1822,6 @@ export class TransferFromCall__Outputs {
 
   get value0(): boolean {
     return this._call.outputValues[0].value.toBoolean();
-  }
-}
-
-export class UpdateExtensionCall extends ethereum.Call {
-  get inputs(): UpdateExtensionCall__Inputs {
-    return new UpdateExtensionCall__Inputs(this);
-  }
-
-  get outputs(): UpdateExtensionCall__Outputs {
-    return new UpdateExtensionCall__Outputs(this);
-  }
-}
-
-export class UpdateExtensionCall__Inputs {
-  _call: UpdateExtensionCall;
-
-  constructor(call: UpdateExtensionCall) {
-    this._call = call;
-  }
-
-  get extension(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-}
-
-export class UpdateExtensionCall__Outputs {
-  _call: UpdateExtensionCall;
-
-  constructor(call: UpdateExtensionCall) {
-    this._call = call;
-  }
-}
-
-export class UpdateGovernanceCall extends ethereum.Call {
-  get inputs(): UpdateGovernanceCall__Inputs {
-    return new UpdateGovernanceCall__Inputs(this);
-  }
-
-  get outputs(): UpdateGovernanceCall__Outputs {
-    return new UpdateGovernanceCall__Outputs(this);
-  }
-}
-
-export class UpdateGovernanceCall__Inputs {
-  _call: UpdateGovernanceCall;
-
-  constructor(call: UpdateGovernanceCall) {
-    this._call = call;
-  }
-
-  get votingPeriod_(): BigInt {
-    return this._call.inputValues[0].value.toBigInt();
-  }
-
-  get gracePeriod_(): BigInt {
-    return this._call.inputValues[1].value.toBigInt();
-  }
-
-  get quorum_(): BigInt {
-    return this._call.inputValues[2].value.toBigInt();
-  }
-
-  get supermajority_(): BigInt {
-    return this._call.inputValues[3].value.toBigInt();
-  }
-
-  get flipPause(): boolean {
-    return this._call.inputValues[4].value.toBoolean();
-  }
-}
-
-export class UpdateGovernanceCall__Outputs {
-  _call: UpdateGovernanceCall;
-
-  constructor(call: UpdateGovernanceCall) {
-    this._call = call;
   }
 }
 

@@ -68,55 +68,6 @@ export class KaliDAOFactory extends ethereum.SmartContract {
   static bind(address: Address): KaliDAOFactory {
     return new KaliDAOFactory("KaliDAOFactory", address);
   }
-
-  kaliMaster(): Address {
-    let result = super.call("kaliMaster", "kaliMaster():(address)", []);
-
-    return result[0].toAddress();
-  }
-
-  try_kaliMaster(): ethereum.CallResult<Address> {
-    let result = super.tryCall("kaliMaster", "kaliMaster():(address)", []);
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toAddress());
-  }
-
-  multicall(data: Array<Bytes>): Array<Bytes> {
-    let result = super.call("multicall", "multicall(bytes[]):(bytes[])", [
-      ethereum.Value.fromBytesArray(data)
-    ]);
-
-    return result[0].toBytesArray();
-  }
-
-  try_multicall(data: Array<Bytes>): ethereum.CallResult<Array<Bytes>> {
-    let result = super.tryCall("multicall", "multicall(bytes[]):(bytes[])", [
-      ethereum.Value.fromBytesArray(data)
-    ]);
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBytesArray());
-  }
-
-  ricardianLLC(): Address {
-    let result = super.call("ricardianLLC", "ricardianLLC():(address)", []);
-
-    return result[0].toAddress();
-  }
-
-  try_ricardianLLC(): ethereum.CallResult<Address> {
-    let result = super.tryCall("ricardianLLC", "ricardianLLC():(address)", []);
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toAddress());
-  }
 }
 
 export class ConstructorCall extends ethereum.Call {

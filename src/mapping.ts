@@ -1,17 +1,6 @@
-import { log, Address, BigInt, Bytes } from "@graphprotocol/graph-ts";
-import {
-  KaliDAOFactory,
-  DAOdeployed as DaoDeployedEvent,
-} from "../generated/KaliDAOFactory/KaliDAOFactory";
-import {
-  DAO,
-  Token,
-  Member,
-  Proposal,
-  Vote,
-  Delegate,
-} from "../generated/schema";
-import { KaliDAO as KaliDAOTemplate } from "../generated/templates";
+import { DAOdeployed as DaoDeployedEvent } from '../generated/KaliDAOFactory/KaliDAOFactory';
+import { DAO, Token, Member, Proposal, Vote, Delegate } from '../generated/schema';
+import { KaliDAO as KaliDAOTemplate } from '../generated/templates';
 import {
   NewProposal as NewProposalEvent,
   ProposalCancelled as ProposalCancelledEvent,
@@ -23,16 +12,16 @@ import {
   PauseFlipped as PauseFlippedEvent,
   Transfer as TransferEvent,
   DelegateVotesChanged as DelegateVotesChangedEvent,
-} from "../generated/templates/KaliDAO/KaliDAO";
+} from '../generated/templates/KaliDAO/KaliDAO';
 
 export function handleDAOdeployed(event: DaoDeployedEvent): void {
   KaliDAOTemplate.create(event.params.kaliDAO);
-  let daoId = event.params.kaliDAO.toHexString();
-  let dao = new DAO(daoId);
+  const daoId = event.params.kaliDAO.toHexString();
+  const dao = new DAO(daoId);
 
   // token
-  let tokenId = daoId + "-token";
-  let token = new Token(tokenId);
+  const tokenId = daoId + '-token';
+  const token = new Token(tokenId);
 
   token.dao = daoId;
   token.name = event.params.name;
@@ -40,12 +29,12 @@ export function handleDAOdeployed(event: DaoDeployedEvent): void {
   token.paused = event.params.paused;
   token.save();
 
-  let membersArray = event.params.voters;
-  let sharesArray = event.params.shares;
+  const membersArray = event.params.voters;
+  const sharesArray = event.params.shares;
 
   for (let i = 0; i < membersArray.length; i++) {
-    let memberId = daoId + "-member-" + membersArray[i].toHexString();
-    let member = new Member(memberId);
+    const memberId = daoId + '-member-' + membersArray[i].toHexString();
+    const member = new Member(memberId);
 
     member.dao = daoId;
     member.address = membersArray[i];
@@ -63,14 +52,14 @@ export function handleDAOdeployed(event: DaoDeployedEvent): void {
 
   // extensions
   // note - this is probably the worst way to do this
-  let extensions: string = "";
-  let extensionsData: string = "";
-  let extensionsArray = event.params.extensions;
-  let extensionsBytesArray = event.params.extensionsData;
+  let extensions = '';
+  let extensionsData = '';
+  const extensionsArray = event.params.extensions;
+  const extensionsBytesArray = event.params.extensionsData;
 
   for (let i = 0; i < extensionsArray.length; i++) {
-    extensions += extensionsArray[i].toHexString() + ",";
-    extensionsData += extensionsBytesArray[i].toHexString() + ",";
+    extensions += extensionsArray[i].toHexString() + ',';
+    extensionsData += extensionsBytesArray[i].toHexString() + ',';
   }
 
   dao.extensions = extensions;
@@ -80,12 +69,12 @@ export function handleDAOdeployed(event: DaoDeployedEvent): void {
 
 // proposal events
 export function handleNewProposal(event: NewProposalEvent): void {
-  let daoId = event.address.toHexString();
-  let proposalId = daoId + "-proposal-" + event.params.proposal.toHex();
-  let voteId = proposalId + "-vote-" + event.transaction.hash.toHex();
+  const daoId = event.address.toHexString();
+  const proposalId = daoId + '-proposal-' + event.params.proposal.toHex();
+  const voteId = proposalId + '-vote-' + event.transaction.hash.toHex();
 
-  let proposal = new Proposal(proposalId);
-  let vote = new Vote(voteId);
+  const proposal = new Proposal(proposalId);
+  const vote = new Vote(voteId);
 
   proposal.dao = daoId;
   proposal.proposer = event.params.proposer;
@@ -100,8 +89,8 @@ export function handleNewProposal(event: NewProposalEvent): void {
 }
 
 export function handleProposalProcessed(event: ProposalProcessedEvent): void {
-  let daoId = event.address.toHexString();
-  let proposalId = daoId + "-proposal-" + event.params.proposal.toHex();
+  const daoId = event.address.toHexString();
+  const proposalId = daoId + '-proposal-' + event.params.proposal.toHex();
   let proposal = Proposal.load(proposalId);
 
   if (proposal == null) {
@@ -113,8 +102,8 @@ export function handleProposalProcessed(event: ProposalProcessedEvent): void {
 }
 
 export function handleProposalCancelled(event: ProposalCancelledEvent): void {
-  let daoId = event.address.toHexString();
-  let proposalId = daoId + "-proposal-" + event.params.proposal.toHex();
+  const daoId = event.address.toHexString();
+  const proposalId = daoId + '-proposal-' + event.params.proposal.toHex();
   let proposal = Proposal.load(proposalId);
 
   if (proposal == null) {
@@ -127,8 +116,8 @@ export function handleProposalCancelled(event: ProposalCancelledEvent): void {
 }
 
 export function handleProposalSponsored(event: ProposalSponsoredEvent): void {
-  let daoId = event.address.toHexString();
-  let proposalId = daoId + "-proposal-" + event.params.proposal.toHex();
+  const daoId = event.address.toHexString();
+  const proposalId = daoId + '-proposal-' + event.params.proposal.toHex();
   let proposal = Proposal.load(proposalId);
 
   if (proposal == null) {
@@ -142,11 +131,11 @@ export function handleProposalSponsored(event: ProposalSponsoredEvent): void {
 }
 
 export function handleVoteCast(event: VoteCastEvent): void {
-  let daoId = event.address.toHexString();
-  let proposalId = daoId + "-proposal-" + event.params.proposal.toHex();
-  let voteId = proposalId + "-vote-" + event.transaction.hash.toHex();
+  const daoId = event.address.toHexString();
+  const proposalId = daoId + '-proposal-' + event.params.proposal.toHex();
+  const voteId = proposalId + '-vote-' + event.transaction.hash.toHex();
 
-  let vote = new Vote(voteId);
+  const vote = new Vote(voteId);
 
   vote.dao = daoId;
   vote.proposal = proposalId;
@@ -158,10 +147,10 @@ export function handleVoteCast(event: VoteCastEvent): void {
 
 // kalidao token events
 export function handleTransfer(event: TransferEvent): void {
-  let daoId = event.address.toHexString();
+  const daoId = event.address.toHexString();
 
-  let memberFromId = daoId + "-member-" + event.params.from.toHexString();
-  let memberToId = daoId + "-member-" + event.params.to.toHexString();
+  const memberFromId = daoId + '-member-' + event.params.from.toHexString();
+  const memberToId = daoId + '-member-' + event.params.to.toHexString();
 
   let memberFrom = Member.load(memberFromId);
   let memberTo = Member.load(memberToId);
@@ -186,9 +175,9 @@ export function handleTransfer(event: TransferEvent): void {
 // export function handleApproval(event: ApprovalEvent): void {}
 
 export function handleDelegateChanged(event: DelegateChangedEvent): void {
-  let daoId = event.address.toHexString();
-  let memberId = daoId + "-member-" + event.params.delegator.toHexString();
-  let delegateId = daoId + "-delegate-" + event.params.toDelegate.toHexString();
+  const daoId = event.address.toHexString();
+  const memberId = daoId + '-member-' + event.params.delegator.toHexString();
+  const delegateId = daoId + '-delegate-' + event.params.toDelegate.toHexString();
 
   let delegate = Delegate.load(delegateId);
 
@@ -209,11 +198,9 @@ export function handleDelegateChanged(event: DelegateChangedEvent): void {
   delegate.save();
 }
 
-export function handleDelegateVotesChanged(
-  event: DelegateVotesChangedEvent
-): void {
-  let daoId = event.address.toHexString();
-  let delegateId = daoId + "-delegate-" + event.params.delegate.toHexString();
+export function handleDelegateVotesChanged(event: DelegateVotesChangedEvent): void {
+  const daoId = event.address.toHexString();
+  const delegateId = daoId + '-delegate-' + event.params.delegate.toHexString();
   let delegate = Delegate.load(delegateId);
 
   if (delegate == null) {
@@ -225,8 +212,8 @@ export function handleDelegateVotesChanged(
 }
 
 export function handlePauseFlipped(event: PauseFlippedEvent): void {
-  let daoId = event.address.toHexString();
-  let tokenId = daoId + "-token";
+  const daoId = event.address.toHexString();
+  const tokenId = daoId + '-token';
 
   let token = Token.load(tokenId);
 

@@ -1,9 +1,11 @@
 {
   "name": "kalidao",
+  "description": "Here lies the subgraph of KALI",
   "license": "GPL-3.0-or-later",
   "scripts": {
     "codegen": "graph codegen",
     "build": "graph build",
+    "lint": "eslint . --ext .ts",
     "deploy": "graph deploy --node https://api.studio.thegraph.com/deploy/ kalidao",
     "create-local": "graph create --node http://localhost:8020/ kalidao",
     "remove-local": "graph remove --node http://localhost:8020/ kalidao",
@@ -17,6 +19,14 @@
   "dependencies": {
     "@graphprotocol/graph-cli": "0.25.1",
     "@graphprotocol/graph-ts": "0.24.1",
-    "mustache": "^4.2.0"
+    "mustache": "^4.2.0",
+    "typescript": "^4.5.5"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.12.0",
+    "@typescript-eslint/parser": "^5.12.0",
+    "eslint": "^8.9.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "prettier": "^2.5.1"
   }
 }
