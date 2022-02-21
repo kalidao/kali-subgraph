@@ -8,7 +8,7 @@ dataSources:
     name: KaliDAOFactory
     network: {{network}}
     source:
-      address: {{address}}
+      address: '{{address}}'
       abi: KaliDAOFactory
       startBlock: {{startBlock}}
     mapping:
@@ -31,7 +31,7 @@ dataSources:
     name: KaliDAOcrowdsale
     network: {{network}}
     source:
-      address: {{crowdsaleAddress}}
+      address: '{{crowdsaleAddress}}'
       abi: KaliDAOcrowdsale
       startBlock: {{crowdsaleStartBlock}}
     mapping:
@@ -55,7 +55,7 @@ dataSources:
     name: KaliDAOtribute
     network: {{network}}
     source:
-      address: {{tributeAddress}}
+      address: '{{tributeAddress}}'
       abi: KaliDAOtribute
       startBlock: {{tributeStartBlock}}
     mapping:
@@ -81,7 +81,7 @@ dataSources:
     name: KaliDAOredemption
     network: {{network}}
     source:
-      address: {{redemptionAddress}}
+      address: '{{redemptionAddress}}'
       abi: KaliDAOredemption
       startBlock: {{redemptionStartBlock}}
     mapping:
