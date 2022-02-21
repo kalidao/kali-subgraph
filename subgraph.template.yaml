@@ -25,7 +25,85 @@ dataSources:
       eventHandlers:
         - event: DAOdeployed(indexed address,string,string,string,bool,address[],bytes[],address[],uint256[],uint32[16])
           handler: handleDAOdeployed
-      file: ./src/mapping.ts
+      file: ./src/factory-mapping.ts
+    
+  - kind: ethereum/contract
+    name: KaliDAOcrowdsale
+    network: {{network}}
+    source:
+      address: {{crowdsaleAddress}}
+      abi: KaliDAOcrowdsale
+      startBlock: {{crowdsaleStartBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - DAO
+        - Crowdsale
+      abis:
+        - name: KaliDAOcrowdsale
+          file: ./abis/KaliDAOcrowdsale.json
+      eventHandlers:
+        - event: ExtensionSet(indexed address,uint256,address,uint8,uint96,uint32,string)
+          handler: handleExtensionSet
+        - event: ExtensionCalled(indexed address,indexed address,uint256)
+          handler: handleExtensionCalled
+      file: ./src/crowdsale-mapping.ts
+
+  - kind: ethereum/contract
+    name: KaliDAOtribute
+    network: {{network}}
+    source:
+      address: {{tributeAddress}}
+      abi: KaliDAOtribute
+      startBlock: {{tributeStartBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - DAO
+        - Tribute
+      abis:
+        - name: KaliDAOtribute
+          file: ./abis/KaliDAOtribute.json
+      eventHandlers:
+        - event: NewTributeProposal(indexed address,indexed address,indexed uint256,address,bool,uint256)
+          handler: handleExtensionSet
+        - event: TributeProposalCancelled(indexed address,indexed uint256)
+          handler: handleProposalCancelled
+        - event: TributeProposalReleased(indexed address,indexed uint256)
+          handler: handleProposalReleased
+      file: ./src/tribute-mapping.ts
+
+  - kind: ethereum/contract
+    name: KaliDAOredemption
+    network: {{network}}
+    source:
+      address: {{redemptionAddress}}
+      abi: KaliDAOredemption
+      startBlock: {{redemptionStartBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - DAO
+        - Redemption
+      abis:
+        - name: KaliDAOredemption
+          file: ./abis/KaliDAOredemption.json
+      eventHandlers:
+        - event: ExtensionSet(indexed address,address[],indexed uint256)
+          handler: handleExtensionSet
+        - event: ExtensionCalled(indexed address,indexed address,indexed uint256)
+          handler: handleExtensionCalled
+        - event: TokensAdded(indexed address,address[])
+          handler: handleTokenAdded
+        - event: TokensRemoved(indexed address,uint256[])
+          handler: handleTokenRemoved
+      file: ./src/redemption-mapping.ts
 templates:
   - name: KaliDAO
     kind: ethereum/contract
@@ -45,8 +123,6 @@ templates:
         - name: KaliDAO
           file: ./abis/KaliDAO.json
       eventHandlers:
-        # - event: Approval(indexed address,indexed address,uint256)
-        #   handler: handleApproval
         - event: DelegateChanged(indexed address,indexed address,indexed address)
           handler: handleDelegateChanged
         - event: DelegateVotesChanged(indexed address,uint256,uint256)
@@ -65,4 +141,4 @@ templates:
           handler: handlePauseFlipped
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleTransfer
-      file: ./src/mapping.ts
+      file: ./src/dao-mapping.ts

@@ -1,8 +1,11 @@
 {
     "network": "arbitrum-one",
     "address": "0x045cbcBA76a7EcF82d0f6B5DCc0881B3C12E37d0",
-    "startBlock": "6018052",
+    "startBlock": 6018052,
     "crowdsaleAddress": "0x0bb3F43533FBf16d69dBdccf6AaAef81acd76FAB",
     "redemptionAddress": "0x7452BDCED6f344e0E4e1169377D369aDE1cB0Ca0",
-    "tributeAddress": "0xf1D291A527281049e66ABD3A41624B13D962868f"
+    "tributeAddress": "0xf1D291A527281049e66ABD3A41624B13D962868f",
+    "crowdsaleStartBlock": 5540319,
+    "redemptionStartBlock": 5454563,
+    "tributeStartBlock": 5434885
 }

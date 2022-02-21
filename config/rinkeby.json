@@ -1,8 +1,11 @@
 {
     "network": "rinkeby",
     "address": "0x1aAF0d0305B8e5685bCA94F35409547fA4bCD548",
-    "startBlock": "10164433",
+    "startBlock": 10164433,
     "crowdsaleAddress": "0x30BF15b764A2A096c37f8c8E1b6b43D853db9a36",
     "redemptionAddress": "0x11f44975e1B204E50108Af6BCB6539798cb15F75",
-    "tributeAddress": "0xd62AB72CC6b53D98eed510646a69B21b77ce5A56"
+    "tributeAddress": "0xd62AB72CC6b53D98eed510646a69B21b77ce5A56",
+    "crowdsaleStartBlock": 10125108,
+    "redemptionStartBlock": 10117237,
+    "tributeStartBlock": 10116783
 }
