@@ -6,11 +6,11 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: KaliDAOFactory
-    network: arbitrum-one
+    network: rinkeby
     source:
-      address: "0x045cbcBA76a7EcF82d0f6B5DCc0881B3C12E37d0"
+      address: "0x1aAF0d0305B8e5685bCA94F35409547fA4bCD548"
       abi: KaliDAOFactory
-      startBlock: 6018052
+      startBlock: 10164433
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -27,10 +27,83 @@ dataSources:
             address,string,string,string,bool,address[],bytes[],address[],uint256[],uint32[16])
           handler: handleDAOdeployed
       file: KaliDAOFactory/KaliDAOFactory.wasm
+  - kind: ethereum/contract
+    name: KaliDAOcrowdsale
+    network: rinkeby
+    source:
+      address: "0x30BF15b764A2A096c37f8c8E1b6b43D853db9a36"
+      abi: KaliDAOcrowdsale
+      startBlock: 10125108
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - Crowdsale
+      abis:
+        - name: KaliDAOcrowdsale
+          file: KaliDAOcrowdsale/abis/KaliDAOcrowdsale.json
+      eventHandlers:
+        - event: ExtensionSet(indexed address,uint256,address,uint8,uint96,uint32,string)
+          handler: handleExtensionSet
+        - event: ExtensionCalled(indexed address,indexed address,uint256)
+          handler: handleExtensionCalled
+      file: KaliDAOcrowdsale/KaliDAOcrowdsale.wasm
+  - kind: ethereum/contract
+    name: KaliDAOtribute
+    network: rinkeby
+    source:
+      address: "0xd62AB72CC6b53D98eed510646a69B21b77ce5A56"
+      abi: KaliDAOtribute
+      startBlock: 10116783
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - Tribute
+      abis:
+        - name: KaliDAOtribute
+          file: KaliDAOtribute/abis/KaliDAOtribute.json
+      eventHandlers:
+        - event: NewTributeProposal(indexed address,indexed address,indexed
+            uint256,address,bool,uint256)
+          handler: handleNewTributeProposal
+        - event: TributeProposalCancelled(indexed address,indexed uint256)
+          handler: handleProposalCancelled
+        - event: TributeProposalReleased(indexed address,indexed uint256)
+          handler: handleProposalReleased
+      file: KaliDAOtribute/KaliDAOtribute.wasm
+  - kind: ethereum/contract
+    name: KaliDAOredemption
+    network: rinkeby
+    source:
+      address: "0x11f44975e1B204E50108Af6BCB6539798cb15F75"
+      abi: KaliDAOredemption
+      startBlock: 10117237
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - Redemption
+      abis:
+        - name: KaliDAOredemption
+          file: KaliDAOredemption/abis/KaliDAOredemption.json
+      eventHandlers:
+        - event: ExtensionSet(indexed address,address[],indexed uint256)
+          handler: handleExtensionSet
+        - event: ExtensionCalled(indexed address,indexed address,indexed uint256)
+          handler: handleExtensionCalled
+        - event: TokensAdded(indexed address,address[])
+          handler: handleTokenAdded
+        - event: TokensRemoved(indexed address,uint256[])
+          handler: handleTokenRemoved
+      file: KaliDAOredemption/KaliDAOredemption.wasm
 templates:
   - name: KaliDAO
     kind: ethereum/contract
-    network: arbitrum-one
+    network: rinkeby
     source:
       abi: KaliDAO
     mapping:
@@ -65,4 +138,4 @@ templates:
           handler: handlePauseFlipped
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleTransfer
-      file: KaliDAOFactory/KaliDAOFactory.wasm
+      file: templates/KaliDAO/KaliDAO.wasm

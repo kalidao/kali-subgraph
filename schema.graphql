@@ -12,6 +12,9 @@ type DAO @entity {
   extensionsData: String
   quorum: BigInt!
   supermajority: BigInt!
+  crowdsale: Crowdsale @derivedFrom(field: "dao")
+  redemption: Redemption @derivedFrom(field: "dao")
+  tribute: Tribute @derivedFrom(field: "dao")
 }
 
 type Token @entity {
@@ -57,4 +60,58 @@ type Delegate @entity {
   dao: DAO!
   balance: BigInt!
   delegatee: [Member!] @derivedFrom(field: "delegate")
+}
+
+type Crowdsale @entity {
+  id: ID!
+  dao: DAO!
+  active: Boolean!
+  listId: BigInt!
+  purchaseToken: Bytes
+  purchaseMultiplier: Int!
+  purchaseLimit: BigInt!
+  saleEnds: BigInt!
+  details: String!
+  purchase: [Purchase!] @derivedFrom(field: "crowdsale")
+  purchaser: String
+  purchased: BigInt
+}
+
+type Purchase @entity {
+  id: ID!
+  crowdsale: Crowdsale!
+  purchaser: String
+  purchased: BigInt
+}
+
+type Redemption @entity {
+  id: ID!
+  dao: DAO!
+  active: Boolean!
+  starts: BigInt!
+  quit: [Quit!] @derivedFrom(field: "redemption")
+}
+
+type Quit @entity {
+  id: ID!
+  redemption: Redemption!
+  member: Member!
+  amount: BigInt!
+}
+
+type Tribute @entity {
+  id: ID!
+  dao: DAO!
+  active: Boolean!
+  proposal: [TributeProposal!] @derivedFrom(field: "tribute")
+}
+
+type TributeProposal @entity {
+  id: ID!
+  tribute: Tribute
+  proposer: Bytes!
+  asset: Bytes!
+  nft: Boolean!
+  value: BigInt!
+  status: String
 }
