@@ -19,6 +19,9 @@ dataSources:
         - DAO
         - Token
         - Member
+        - Tribute
+        - Crowdsale
+        - Redemption
       abis:
         - name: KaliDAOFactory
           file: ./abis/KaliDAOFactory.json

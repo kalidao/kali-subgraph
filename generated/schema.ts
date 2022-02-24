@@ -16,6 +16,7 @@ export class DAO extends Entity {
     super();
     this.set("id", Value.fromString(id));
 
+    this.set("address", Value.fromBytes(Bytes.empty()));
     this.set("birth", Value.fromBigInt(BigInt.zero()));
     this.set("founder", Value.fromBytes(Bytes.empty()));
     this.set("docs", Value.fromString(""));
@@ -49,6 +50,15 @@ export class DAO extends Entity {
 
   set id(value: string) {
     this.set("id", Value.fromString(value));
+  }
+
+  get address(): Bytes {
+    let value = this.get("address");
+    return value!.toBytes();
+  }
+
+  set address(value: Bytes) {
+    this.set("address", Value.fromBytes(value));
   }
 
   get birth(): BigInt {
@@ -131,37 +141,20 @@ export class DAO extends Entity {
     }
   }
 
-  get extensions(): string | null {
+  get extensions(): Array<Bytes> | null {
     let value = this.get("extensions");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
-      return value.toString();
+      return value.toBytesArray();
     }
   }
 
-  set extensions(value: string | null) {
+  set extensions(value: Array<Bytes> | null) {
     if (!value) {
       this.unset("extensions");
     } else {
-      this.set("extensions", Value.fromString(<string>value));
-    }
-  }
-
-  get extensionsData(): string | null {
-    let value = this.get("extensionsData");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set extensionsData(value: string | null) {
-    if (!value) {
-      this.unset("extensionsData");
-    } else {
-      this.set("extensionsData", Value.fromString(<string>value));
+      this.set("extensions", Value.fromBytesArray(<Array<Bytes>>value));
     }
   }
 
@@ -242,6 +235,7 @@ export class Token extends Entity {
 
     this.set("dao", Value.fromString(""));
     this.set("name", Value.fromString(""));
+    this.set("symbol", Value.fromString(""));
   }
 
   save(): void {
@@ -288,21 +282,13 @@ export class Token extends Entity {
     this.set("name", Value.fromString(value));
   }
 
-  get symbol(): string | null {
+  get symbol(): string {
     let value = this.get("symbol");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
+    return value!.toString();
   }
 
-  set symbol(value: string | null) {
-    if (!value) {
-      this.unset("symbol");
-    } else {
-      this.set("symbol", Value.fromString(<string>value));
-    }
+  set symbol(value: string) {
+    this.set("symbol", Value.fromString(value));
   }
 
   get paused(): boolean {
@@ -409,6 +395,77 @@ export class Member extends Entity {
       this.unset("proposals");
     } else {
       this.set("proposals", Value.fromStringArray(<Array<string>>value));
+    }
+  }
+}
+
+export class Delegate extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("dao", Value.fromString(""));
+    this.set("balance", Value.fromBigInt(BigInt.zero()));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save Delegate entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save Delegate entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("Delegate", id.toString(), this);
+    }
+  }
+
+  static load(id: string): Delegate | null {
+    return changetype<Delegate | null>(store.get("Delegate", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get dao(): string {
+    let value = this.get("dao");
+    return value!.toString();
+  }
+
+  set dao(value: string) {
+    this.set("dao", Value.fromString(value));
+  }
+
+  get balance(): BigInt {
+    let value = this.get("balance");
+    return value!.toBigInt();
+  }
+
+  set balance(value: BigInt) {
+    this.set("balance", Value.fromBigInt(value));
+  }
+
+  get delegatee(): Array<string> | null {
+    let value = this.get("delegatee");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set delegatee(value: Array<string> | null) {
+    if (!value) {
+      this.unset("delegatee");
+    } else {
+      this.set("delegatee", Value.fromStringArray(<Array<string>>value));
     }
   }
 }
@@ -629,87 +686,12 @@ export class Vote extends Entity {
   }
 }
 
-export class Delegate extends Entity {
-  constructor(id: string) {
-    super();
-    this.set("id", Value.fromString(id));
-
-    this.set("dao", Value.fromString(""));
-    this.set("balance", Value.fromBigInt(BigInt.zero()));
-  }
-
-  save(): void {
-    let id = this.get("id");
-    assert(id != null, "Cannot save Delegate entity without an ID");
-    if (id) {
-      assert(
-        id.kind == ValueKind.STRING,
-        "Cannot save Delegate entity with non-string ID. " +
-          'Considering using .toHex() to convert the "id" to a string.'
-      );
-      store.set("Delegate", id.toString(), this);
-    }
-  }
-
-  static load(id: string): Delegate | null {
-    return changetype<Delegate | null>(store.get("Delegate", id));
-  }
-
-  get id(): string {
-    let value = this.get("id");
-    return value!.toString();
-  }
-
-  set id(value: string) {
-    this.set("id", Value.fromString(value));
-  }
-
-  get dao(): string {
-    let value = this.get("dao");
-    return value!.toString();
-  }
-
-  set dao(value: string) {
-    this.set("dao", Value.fromString(value));
-  }
-
-  get balance(): BigInt {
-    let value = this.get("balance");
-    return value!.toBigInt();
-  }
-
-  set balance(value: BigInt) {
-    this.set("balance", Value.fromBigInt(value));
-  }
-
-  get delegatee(): Array<string> | null {
-    let value = this.get("delegatee");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toStringArray();
-    }
-  }
-
-  set delegatee(value: Array<string> | null) {
-    if (!value) {
-      this.unset("delegatee");
-    } else {
-      this.set("delegatee", Value.fromStringArray(<Array<string>>value));
-    }
-  }
-}
-
 export class Crowdsale extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
 
     this.set("dao", Value.fromString(""));
-    this.set("listId", Value.fromBigInt(BigInt.zero()));
-    this.set("purchaseLimit", Value.fromBigInt(BigInt.zero()));
-    this.set("saleEnds", Value.fromBigInt(BigInt.zero()));
-    this.set("details", Value.fromString(""));
   }
 
   save(): void {
@@ -756,13 +738,21 @@ export class Crowdsale extends Entity {
     this.set("active", Value.fromBoolean(value));
   }
 
-  get listId(): BigInt {
+  get listId(): BigInt | null {
     let value = this.get("listId");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
   }
 
-  set listId(value: BigInt) {
-    this.set("listId", Value.fromBigInt(value));
+  set listId(value: BigInt | null) {
+    if (!value) {
+      this.unset("listId");
+    } else {
+      this.set("listId", Value.fromBigInt(<BigInt>value));
+    }
   }
 
   get purchaseToken(): Bytes | null {
@@ -791,31 +781,55 @@ export class Crowdsale extends Entity {
     this.set("purchaseMultiplier", Value.fromI32(value));
   }
 
-  get purchaseLimit(): BigInt {
+  get purchaseLimit(): BigInt | null {
     let value = this.get("purchaseLimit");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
   }
 
-  set purchaseLimit(value: BigInt) {
-    this.set("purchaseLimit", Value.fromBigInt(value));
+  set purchaseLimit(value: BigInt | null) {
+    if (!value) {
+      this.unset("purchaseLimit");
+    } else {
+      this.set("purchaseLimit", Value.fromBigInt(<BigInt>value));
+    }
   }
 
-  get saleEnds(): BigInt {
+  get saleEnds(): BigInt | null {
     let value = this.get("saleEnds");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
   }
 
-  set saleEnds(value: BigInt) {
-    this.set("saleEnds", Value.fromBigInt(value));
+  set saleEnds(value: BigInt | null) {
+    if (!value) {
+      this.unset("saleEnds");
+    } else {
+      this.set("saleEnds", Value.fromBigInt(<BigInt>value));
+    }
   }
 
-  get details(): string {
+  get details(): string | null {
     let value = this.get("details");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
   }
 
-  set details(value: string) {
-    this.set("details", Value.fromString(value));
+  set details(value: string | null) {
+    if (!value) {
+      this.unset("details");
+    } else {
+      this.set("details", Value.fromString(<string>value));
+    }
   }
 
   get purchase(): Array<string> | null {
@@ -832,40 +846,6 @@ export class Crowdsale extends Entity {
       this.unset("purchase");
     } else {
       this.set("purchase", Value.fromStringArray(<Array<string>>value));
-    }
-  }
-
-  get purchaser(): string | null {
-    let value = this.get("purchaser");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set purchaser(value: string | null) {
-    if (!value) {
-      this.unset("purchaser");
-    } else {
-      this.set("purchaser", Value.fromString(<string>value));
-    }
-  }
-
-  get purchased(): BigInt | null {
-    let value = this.get("purchased");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBigInt();
-    }
-  }
-
-  set purchased(value: BigInt | null) {
-    if (!value) {
-      this.unset("purchased");
-    } else {
-      this.set("purchased", Value.fromBigInt(<BigInt>value));
     }
   }
 }
@@ -1008,6 +988,23 @@ export class Redemption extends Entity {
 
   set starts(value: BigInt) {
     this.set("starts", Value.fromBigInt(value));
+  }
+
+  get redeemables(): Array<Bytes> | null {
+    let value = this.get("redeemables");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBytesArray();
+    }
+  }
+
+  set redeemables(value: Array<Bytes> | null) {
+    if (!value) {
+      this.unset("redeemables");
+    } else {
+      this.set("redeemables", Value.fromBytesArray(<Array<Bytes>>value));
+    }
   }
 
   get quit(): Array<string> | null {

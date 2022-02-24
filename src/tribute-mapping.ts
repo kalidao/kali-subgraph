@@ -9,7 +9,11 @@ import {
 export function handleNewTributeProposal(event: NewTributeProposalEvent): void {
   const daoId = event.params.dao.toHexString();
   const tributeId = daoId + '-tribute';
-  const tribute = new Tribute(tributeId);
+  let tribute = Tribute.load(tributeId);
+
+  if (tribute === null) {
+    tribute = new Tribute(tributeId);
+  }
 
   tribute.dao = daoId;
   tribute.active = true;

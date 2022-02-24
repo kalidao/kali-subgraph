@@ -1,5 +1,6 @@
 type DAO @entity {
   id: ID!
+  address: Bytes!
   birth: BigInt!
   founder: Bytes!
   token: Token! @derivedFrom(field: "dao")
@@ -8,8 +9,7 @@ type DAO @entity {
   gracePeriod: BigInt!
   members: [Member!]! @derivedFrom(field: "dao")
   proposals: [Proposal!] @derivedFrom(field: "dao")
-  extensions: String
-  extensionsData: String
+  extensions: [Bytes!]
   quorum: BigInt!
   supermajority: BigInt!
   crowdsale: Crowdsale @derivedFrom(field: "dao")
@@ -21,8 +21,8 @@ type Token @entity {
   id: ID!
   dao: DAO!
   name: String!
-  symbol: String
-  paused: Boolean!
+  symbol: String!
+  paused: Boolean
 }
 
 type Member @entity {
@@ -32,6 +32,13 @@ type Member @entity {
   shares: BigInt!
   delegate: Delegate
   proposals: [Proposal!]
+}
+
+type Delegate @entity {
+  id: ID!
+  dao: DAO!
+  balance: BigInt!
+  delegatee: [Member!] @derivedFrom(field: "delegate")
 }
 
 type Proposal @entity {
@@ -55,26 +62,17 @@ type Vote @entity {
   vote: Boolean
 }
 
-type Delegate @entity {
-  id: ID!
-  dao: DAO!
-  balance: BigInt!
-  delegatee: [Member!] @derivedFrom(field: "delegate")
-}
-
 type Crowdsale @entity {
   id: ID!
   dao: DAO!
   active: Boolean!
-  listId: BigInt!
+  listId: BigInt
   purchaseToken: Bytes
-  purchaseMultiplier: Int!
-  purchaseLimit: BigInt!
-  saleEnds: BigInt!
-  details: String!
+  purchaseMultiplier: Int
+  purchaseLimit: BigInt
+  saleEnds: BigInt
+  details: String
   purchase: [Purchase!] @derivedFrom(field: "crowdsale")
-  purchaser: String
-  purchased: BigInt
 }
 
 type Purchase @entity {
@@ -89,6 +87,7 @@ type Redemption @entity {
   dao: DAO!
   active: Boolean!
   starts: BigInt!
+  redeemables: [Bytes!]
   quit: [Quit!] @derivedFrom(field: "redemption")
 }
 

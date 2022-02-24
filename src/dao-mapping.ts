@@ -36,7 +36,7 @@ export function handleProposalProcessed(event: ProposalProcessedEvent): void {
   const proposalId = daoId + '-proposal-' + event.params.proposal.toHex();
   let proposal = Proposal.load(proposalId);
 
-  if (proposal == null) {
+  if (proposal === null) {
     proposal = new Proposal(proposalId);
   }
 
@@ -49,7 +49,7 @@ export function handleProposalCancelled(event: ProposalCancelledEvent): void {
   const proposalId = daoId + '-proposal-' + event.params.proposal.toHex();
   let proposal = Proposal.load(proposalId);
 
-  if (proposal == null) {
+  if (proposal === null) {
     proposal = new Proposal(proposalId);
   }
 
@@ -63,7 +63,7 @@ export function handleProposalSponsored(event: ProposalSponsoredEvent): void {
   const proposalId = daoId + '-proposal-' + event.params.proposal.toHex();
   let proposal = Proposal.load(proposalId);
 
-  if (proposal == null) {
+  if (proposal === null) {
     proposal = new Proposal(proposalId);
   }
 
@@ -98,11 +98,11 @@ export function handleTransfer(event: TransferEvent): void {
   let memberFrom = Member.load(memberFromId);
   let memberTo = Member.load(memberToId);
 
-  if (memberFrom == null) {
+  if (memberFrom === null) {
     memberFrom = new Member(memberFromId);
   }
 
-  if (memberTo == null) {
+  if (memberTo === null) {
     memberTo = new Member(memberToId);
   }
 
@@ -124,13 +124,13 @@ export function handleDelegateChanged(event: DelegateChangedEvent): void {
 
   let delegate = Delegate.load(delegateId);
 
-  if (delegate == null) {
+  if (delegate === null) {
     delegate = new Delegate(delegateId);
   }
 
   let member = Member.load(memberId);
 
-  if (member == null) {
+  if (member === null) {
     member = new Member(memberId);
   }
 
@@ -146,7 +146,7 @@ export function handleDelegateVotesChanged(event: DelegateVotesChangedEvent): vo
   const delegateId = daoId + '-delegate-' + event.params.delegate.toHexString();
   let delegate = Delegate.load(delegateId);
 
-  if (delegate == null) {
+  if (delegate === null) {
     delegate = new Delegate(delegateId);
   }
 
@@ -160,7 +160,7 @@ export function handlePauseFlipped(event: PauseFlippedEvent): void {
 
   let token = Token.load(tokenId);
 
-  if (token == null) {
+  if (token === null) {
     token = new Token(tokenId);
   }
 
