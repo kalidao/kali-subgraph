@@ -10,6 +10,7 @@ import {
   DelegateVotesChanged as DelegateVotesChangedEvent,
 } from '../generated/templates/KaliDAO/KaliDAO';
 import { Token, Member, Proposal, Vote, Delegate } from '../generated/schema';
+import { validateProposalType } from './utils';
 
 export function handleNewProposal(event: NewProposalEvent): void {
   const daoId = event.address.toHexString();
@@ -22,7 +23,8 @@ export function handleNewProposal(event: NewProposalEvent): void {
   proposal.dao = daoId;
   proposal.proposer = event.params.proposer;
   proposal.description = event.params.description;
-  proposal.type = event.params.proposalType.toString();
+  const proposalType = validateProposalType(event.params.proposalType);
+  proposal.proposalType = proposalType;
   proposal.creationTime = event.block.timestamp;
   vote.dao = daoId;
   vote.proposal = proposalId;

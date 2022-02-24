@@ -1,9 +1,32 @@
+enum ProposalType {
+  MINT
+  BURN
+  CALL
+  VPERIOD
+  GPERIOD
+  QUORUM
+  SUPERMAJORITY
+  TYPE
+  PAUSE
+  EXTENSION
+  ESCAPE
+  DOCS
+}
+
+enum VoteType {
+  SIMPLE_MAJORITY
+  SIMPLE_MAJORITY_QUORUM_REQUIRED
+  SUPERMAJORITY
+  SUPERMAJORITY_QUORUM_REQUIRED
+}
+
 type DAO @entity {
   id: ID!
   address: Bytes!
   birth: BigInt!
   founder: Bytes!
   token: Token! @derivedFrom(field: "dao")
+  treasury: Treasury! @derivedFrom(field: "dao")
   docs: String!
   votingPeriod: BigInt!
   gracePeriod: BigInt!
@@ -17,12 +40,20 @@ type DAO @entity {
   tribute: Tribute @derivedFrom(field: "dao")
 }
 
+type Treasury @entity {
+  id: ID!
+  dao: DAO!
+  token: [Token!] @derivedFrom(field: "treasury")
+  balance: BigInt
+}
+
 type Token @entity {
   id: ID!
   dao: DAO!
   name: String!
   symbol: String!
   paused: Boolean
+  treasury: Treasury
 }
 
 type Member @entity {
@@ -45,6 +76,7 @@ type Proposal @entity {
   id: ID!
   dao: DAO!
   proposer: Bytes!
+  proposalType: ProposalType
   type: String!
   description: String!
   sponsor: Bytes
