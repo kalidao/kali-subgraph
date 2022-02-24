@@ -18,16 +18,14 @@
     "deploy-rinkeby": "yarn prepare:rinkeby && graph codegen && graph build && graph deploy --product hosted-service nerderlyne/kali-rinkeby",
     "deploy-mainnet": "yarn prepare:mainnet && graph codegen && graph build && graph deploy --product hosted-service nerderlyne/kali-mainnet",
     "deploy-arbitrum": "yarn prepare:arbitrum && graph codegen && graph build && graph deploy --product hosted-service nerderlyne/kali-arbitrum",
-    "deploy-polygon": "yarn prepare:polygon && graph codegen && graph build && graph deploy --product hosted-service nerderlyne/kali-polygon"
+    "deploy-polygon": "yarn prepare:polygon && graph codegen && graph build && graph deploy --product hosted-service nerderlyne/kali-matic"
     
   },
   "dependencies": {
     "@graphprotocol/graph-cli": "0.25.1",
     "@graphprotocol/graph-ts": "0.24.1",
     "ganache-cli": "^6.12.2",
-    "mustache": "^4.2.0",
-    "truffle": "^5.5.0",
-    "typescript": "^4.5.5"
+    "mustache": "^4.2.0"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.12.0",
