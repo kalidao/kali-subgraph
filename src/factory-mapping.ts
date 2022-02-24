@@ -3,6 +3,7 @@ import { DAOdeployed as DaoDeployedEvent } from '../generated/KaliDAOFactory/Kal
 import { DAO, Token, Tribute } from '../generated/schema';
 import { Bytes, dataSource, log } from '@graphprotocol/graph-ts';
 import { KaliDAO } from '../generated/templates/KaliDAO/KaliDAO';
+import { tokenTotalSupply } from './token-helpers';
 
 export function handleDAOdeployed(event: DaoDeployedEvent): void {
   KaliDAOTemplate.create(event.params.kaliDAO);
@@ -19,6 +20,7 @@ export function handleDAOdeployed(event: DaoDeployedEvent): void {
   token.dao = daoId;
   token.name = event.params.name;
   token.symbol = event.params.symbol;
+  token.totalSupply = tokenTotalSupply(event.params.kaliDAO);
   token.paused = event.params.paused;
   token.save();
 

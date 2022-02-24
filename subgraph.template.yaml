@@ -22,9 +22,12 @@ dataSources:
         - Tribute
         - Crowdsale
         - Redemption
+        - Treasury
       abis:
         - name: KaliDAOFactory
           file: ./abis/KaliDAOFactory.json
+        - name: Erc20
+          file: ./abis/Erc20.json
       eventHandlers:
         - event: DAOdeployed(indexed address,string,string,string,bool,address[],bytes[],address[],uint256[],uint32[16])
           handler: handleDAOdeployed
@@ -43,6 +46,7 @@ dataSources:
       language: wasm/assemblyscript
       entities:
         - Crowdsale
+        - Treasury
       abis:
         - name: KaliDAOcrowdsale
           file: ./abis/KaliDAOcrowdsale.json
@@ -66,16 +70,19 @@ dataSources:
       language: wasm/assemblyscript
       entities:
         - Tribute
+        - Treasury
       abis:
         - name: KaliDAOtribute
           file: ./abis/KaliDAOtribute.json
+        - name: Erc20
+          file: ./abis/Erc20.json
       eventHandlers:
         - event: NewTributeProposal(indexed address,indexed address,indexed uint256,address,bool,uint256)
           handler: handleNewTributeProposal
         - event: TributeProposalCancelled(indexed address,indexed uint256)
-          handler: handleProposalCancelled
+          handler: handleTributeProposalCancelled
         - event: TributeProposalReleased(indexed address,indexed uint256)
-          handler: handleProposalReleased
+          handler: handleTributeProposalReleased
       file: ./src/tribute-mapping.ts
 
   - kind: ethereum/contract
@@ -91,6 +98,7 @@ dataSources:
       language: wasm/assemblyscript
       entities:
         - Redemption
+        - Treasury
       abis:
         - name: KaliDAOredemption
           file: ./abis/KaliDAOredemption.json
@@ -119,9 +127,12 @@ templates:
         - Token
         - Member
         - Proposal
+        - Treasury
       abis:
         - name: KaliDAO
           file: ./abis/KaliDAO.json
+        - name: Erc20
+          file: ./abis/Erc20.json
       eventHandlers:
         - event: DelegateChanged(indexed address,indexed address,indexed address)
           handler: handleDelegateChanged
