@@ -12,7 +12,7 @@ import {
   Approval as ApprovalEvent,
 } from '../generated/templates/KaliDAO/KaliDAO';
 import { Token, Member, Proposal, Vote, Delegate } from '../generated/schema';
-import { getBalance } from './token-helpers';
+import { createToken, getBalance } from './token-helpers';
 import { validateProposalType } from './utils';
 import { ZERO_ADDRESS } from './constants';
 
@@ -105,8 +105,11 @@ export function handleTransfer(event: TransferEvent): void {
       member.address = event.params.to;
     }
 
+    const token = createToken(event.address);
+
     member.shares = member.shares.plus(event.params.amount);
     member.save();
+    token.save();
   } else {
     const memberFromId = daoId + '-member-' + event.params.from.toHexString();
     const memberToId = daoId + '-member-' + event.params.to.toHexString();
@@ -131,11 +134,8 @@ export function handleTransfer(event: TransferEvent): void {
     memberFrom.shares = memberFrom.shares.minus(event.params.amount);
     memberTo.shares = memberTo.shares.plus(event.params.amount);
 
-    // check negative
-    // if (memberFrom.shares < BigInt.fromI32(0)) {
-    //   memberFrom.
-    // }
-
+    const token = createToken(event.address);
+    token.save();
     memberFrom.save();
     memberTo.save();
   }

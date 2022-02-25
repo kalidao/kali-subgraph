@@ -109,13 +109,14 @@ type Crowdsale @entity {
   saleEnds: BigInt
   details: String
   purchase: [Purchase!] @derivedFrom(field: "crowdsale")
+  amountPurchased: BigInt!
 }
 
 type Purchase @entity {
   id: ID!
   crowdsale: Crowdsale!
-  purchaser: String
-  purchased: BigInt
+  purchaser: Bytes!
+  purchased: BigInt!
 }
 
 type Redemption @entity {

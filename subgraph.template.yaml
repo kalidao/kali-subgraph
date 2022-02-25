@@ -47,9 +47,13 @@ dataSources:
       entities:
         - Crowdsale
         - Treasury
+        - Token
+        - Purchase
       abis:
         - name: KaliDAOcrowdsale
           file: ./abis/KaliDAOcrowdsale.json
+        - name: Erc20
+          file: ./abis/Erc20.json
       eventHandlers:
         - event: ExtensionSet(indexed address,uint256,address,uint8,uint96,uint32,string)
           handler: handleExtensionSet

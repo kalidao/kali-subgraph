@@ -1,5 +1,24 @@
 import { Address, BigInt, log } from '@graphprotocol/graph-ts';
 import { Erc20 } from '../generated/KaliDAOFactory/Erc20';
+import { Token } from '../generated/schema';
+
+export function createToken(dao: Address): Token {
+  const tokenId = dao.toHexString() + '-token';
+  let token = Token.load(tokenId);
+
+  if (token === null) {
+    token = new Token(tokenId);
+  }
+
+  token.dao = dao.toHexString();
+  token.name = tokenName(dao);
+  token.symbol = tokenSymbol(dao);
+  token.totalSupply = tokenTotalSupply(dao);
+
+  log.error('token of {}', [dao.toHexString()]);
+
+  return token as Token;
+}
 
 export function tokenName(address: Address): string {
   let contract = Erc20.bind(address);

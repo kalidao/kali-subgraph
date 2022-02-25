@@ -34,8 +34,6 @@ export function handleDAOdeployed(event: DaoDeployedEvent): void {
   dao.address = event.params.kaliDAO;
   dao.extensions = event.params.extensions.map<Bytes>((ext) => ext as Bytes);
 
-  const network = dataSource.network();
-  log.error('network: {}', [network]);
   dao.save();
 
   const tributeId = daoId + '-tribute';
