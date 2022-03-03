@@ -31,7 +31,7 @@ dataSources:
       eventHandlers:
         - event: DAOdeployed(indexed address,string,string,string,bool,address[],bytes[],address[],uint256[],uint32[16])
           handler: handleDAOdeployed
-      file: ./src/factory-mapping.ts
+      file: ./src/mappings/factory-mapping.ts
     
   - kind: ethereum/contract
     name: KaliDAOcrowdsale
@@ -59,7 +59,7 @@ dataSources:
           handler: handleExtensionSet
         - event: ExtensionCalled(indexed address,indexed address,uint256)
           handler: handleExtensionCalled
-      file: ./src/crowdsale-mapping.ts
+      file: ./src/mappings/crowdsale-mapping.ts
 
   - kind: ethereum/contract
     name: KaliDAOtribute
@@ -87,7 +87,7 @@ dataSources:
           handler: handleTributeProposalCancelled
         - event: TributeProposalReleased(indexed address,indexed uint256)
           handler: handleTributeProposalReleased
-      file: ./src/tribute-mapping.ts
+      file: ./src/mappings/tribute-mapping.ts
 
   - kind: ethereum/contract
     name: KaliDAOredemption
@@ -115,7 +115,7 @@ dataSources:
           handler: handleTokenAdded
         - event: TokensRemoved(indexed address,uint256[])
           handler: handleTokenRemoved
-      file: ./src/redemption-mapping.ts
+      file: ./src/mappings/redemption-mapping.ts
 templates:
   - name: KaliDAO
     kind: ethereum/contract
@@ -156,4 +156,4 @@ templates:
           handler: handlePauseFlipped
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleTransfer
-      file: ./src/dao-mapping.ts
+      file: ./src/mappings/dao-mapping.ts

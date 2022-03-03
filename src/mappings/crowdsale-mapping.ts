@@ -1,11 +1,11 @@
 import { Address, BigInt, log } from '@graphprotocol/graph-ts';
-import { Crowdsale, Purchase, Token } from '../generated/schema';
+import { Crowdsale, Purchase, Token } from '../../generated/schema';
 import {
   ExtensionSet as ExtensionSetEvent,
   ExtensionCalled as ExtensionCalledEvent,
   KaliDAOcrowdsale,
-} from '../generated/KaliDAOcrowdsale/KaliDAOcrowdsale';
-import { createToken, tokenTotalSupply } from './token-helpers';
+} from '../../generated/KaliDAOcrowdsale/KaliDAOcrowdsale';
+import { createToken, tokenTotalSupply } from '../helpers/token-helpers';
 
 // ExtensionSet
 export function handleExtensionSet(event: ExtensionSetEvent): void {

@@ -1,6 +1,6 @@
 import { Address, BigInt, log } from '@graphprotocol/graph-ts';
-import { Erc20 } from '../generated/KaliDAOFactory/Erc20';
-import { Token } from '../generated/schema';
+import { Erc20 } from '../../generated/KaliDAOFactory/Erc20';
+import { Token } from '../../generated/schema';
 
 export function createToken(dao: Address): Token {
   const tokenId = dao.toHexString() + '-token';

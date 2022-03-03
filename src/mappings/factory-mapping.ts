@@ -1,9 +1,9 @@
-import { KaliDAO as KaliDAOTemplate } from '../generated/templates';
-import { DAOdeployed as DaoDeployedEvent } from '../generated/KaliDAOFactory/KaliDAOFactory';
-import { DAO, Token, Tribute } from '../generated/schema';
+import { KaliDAO as KaliDAOTemplate } from '../../generated/templates';
+import { DAOdeployed as DaoDeployedEvent } from '../../generated/KaliDAOFactory/KaliDAOFactory';
+import { DAO, Token, Tribute } from '../../generated/schema';
 import { Bytes, dataSource, log } from '@graphprotocol/graph-ts';
-import { KaliDAO } from '../generated/templates/KaliDAO/KaliDAO';
-import { tokenTotalSupply } from './token-helpers';
+import { KaliDAO } from '../../generated/templates/KaliDAO/KaliDAO';
+import { tokenTotalSupply } from '../helpers/token-helpers';
 
 export function handleDAOdeployed(event: DaoDeployedEvent): void {
   KaliDAOTemplate.create(event.params.kaliDAO);

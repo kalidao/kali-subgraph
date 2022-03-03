@@ -10,11 +10,11 @@ import {
   Transfer as TransferEvent,
   DelegateVotesChanged as DelegateVotesChangedEvent,
   Approval as ApprovalEvent,
-} from '../generated/templates/KaliDAO/KaliDAO';
-import { Token, Member, Proposal, Vote, Delegate } from '../generated/schema';
-import { createToken, getBalance } from './token-helpers';
-import { validateProposalType } from './utils';
-import { ZERO_ADDRESS } from './constants';
+} from '../../generated/templates/KaliDAO/KaliDAO';
+import { Token, Member, Proposal, Vote, Delegate } from '../../generated/schema';
+import { createToken, getBalance } from '../helpers/token-helpers';
+import { validateProposalType } from '../helpers/dao-helpers';
+import { ZERO_ADDRESS } from '../helpers/constants';
 
 export function handleNewProposal(event: NewProposalEvent): void {
   const daoId = event.address.toHexString();
@@ -110,6 +110,24 @@ export function handleTransfer(event: TransferEvent): void {
     member.shares = member.shares.plus(event.params.amount);
     member.save();
     token.save();
+
+    // Burn
+  } else if (event.params.to.toHexString() == ZERO_ADDRESS) {
+    const memberId = daoId + '-member-' + event.params.from.toHexString();
+    let member = Member.load(memberId);
+
+    if (member === null) {
+      member = new Member(memberId);
+      member.shares = BigInt.fromI32(0);
+      member.dao = daoId;
+      member.address = event.params.from;
+    }
+
+    const token = createToken(event.address);
+
+    member.shares = member.shares.minus(event.params.amount);
+    member.save();
+    token.save();
   } else {
     const memberFromId = daoId + '-member-' + event.params.from.toHexString();
     const memberToId = daoId + '-member-' + event.params.to.toHexString();
@@ -135,6 +153,7 @@ export function handleTransfer(event: TransferEvent): void {
     memberTo.shares = memberTo.shares.plus(event.params.amount);
 
     const token = createToken(event.address);
+
     token.save();
     memberFrom.save();
     memberTo.save();

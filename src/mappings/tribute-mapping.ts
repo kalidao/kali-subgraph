@@ -1,11 +1,11 @@
-import { Token, Tribute, TributeProposal } from '../generated/schema';
+import { Token, Tribute, TributeProposal } from '../../generated/schema';
 import {
   NewTributeProposal as NewTributeProposalEvent,
   TributeProposalCancelled as TributeProposalCancelledEvent,
   TributeProposalReleased as TributeProposalReleasedEvent,
-} from '../generated/KaliDAOtribute/KaliDAOtribute';
-import { tokenName, tokenSymbol, tokenTotalSupply } from './token-helpers';
-import { ZERO_ADDRESS } from './constants';
+} from '../../generated/KaliDAOtribute/KaliDAOtribute';
+import { tokenName, tokenSymbol, tokenTotalSupply } from '../helpers/token-helpers';
+import { ZERO_ADDRESS } from '../helpers/constants';
 
 // NewTributeProposal
 export function handleNewTributeProposal(event: NewTributeProposalEvent): void {

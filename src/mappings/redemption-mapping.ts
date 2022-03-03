@@ -1,11 +1,11 @@
-import { Quit, Redemption } from '../generated/schema';
+import { Quit, Redemption } from '../../generated/schema';
 import {
   KaliDAOredemption,
   ExtensionSet as ExtensionSetEvent,
   ExtensionCalled as ExtensionCalledEvent,
   TokensAdded as TokensAddedEvent,
   TokensRemoved as TokensRemovedEvent,
-} from '../generated/KaliDAOredemption/KaliDAOredemption';
+} from '../../generated/KaliDAOredemption/KaliDAOredemption';
 import { Bytes } from '@graphprotocol/graph-ts';
 
 // ExtensionSet
