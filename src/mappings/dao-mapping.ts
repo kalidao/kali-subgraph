@@ -11,9 +11,14 @@ import {
   DelegateVotesChanged as DelegateVotesChangedEvent,
   Approval as ApprovalEvent,
 } from '../../generated/templates/KaliDAO/KaliDAO';
-import { Token, Member, Proposal, Vote, Delegate } from '../../generated/schema';
+import { Token, Member, Proposal, Vote, Delegate, DAO } from '../../generated/schema';
 import { createToken, getBalance } from '../helpers/token-helpers';
-import { validateProposalType } from '../helpers/dao-helpers';
+import {
+  getQuorum,
+  getSupermajority,
+  getVotingPeriod,
+  validateProposalType,
+} from '../helpers/dao-helpers';
 import { ZERO_ADDRESS } from '../helpers/constants';
 
 export function handleNewProposal(event: NewProposalEvent): void {
@@ -43,6 +48,22 @@ export function handleProposalProcessed(event: ProposalProcessedEvent): void {
 
   proposal.status = event.params.didProposalPass;
   proposal.save();
+
+  if (event.params.didProposalPass) {
+    const dao = new DAO(event.address.toHexString());
+
+    if (proposal.proposalType === 'VPERIOD') {
+      dao.votingPeriod = getVotingPeriod(event.address);
+    }
+    if (proposal.proposalType === 'QUORUM') {
+      dao.quorum = getQuorum(event.address);
+    }
+    if (proposal.proposalType === 'SUPERMAJORITY') {
+      dao.supermajority = getSupermajority(event.address);
+    }
+
+    dao.save();
+  }
 }
 
 export function handleProposalCancelled(event: ProposalCancelledEvent): void {
