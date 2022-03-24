@@ -49,28 +49,15 @@ export function handleProposalProcessed(event: ProposalProcessedEvent): void {
   proposal.status = event.params.didProposalPass;
   proposal.save();
 
-  const dao = new DAO(event.address.toHexString());
-  dao.quorum = getQuorum(event.address);
-  dao.save();
-
   if (event.params.didProposalPass) {
     const dao = new DAO(event.address.toHexString());
+
+    // fetching all if passed because conditional isn't working???!
     dao.quorum = getQuorum(event.address);
     dao.votingPeriod = getVotingPeriod(event.address);
     dao.supermajority = getSupermajority(event.address);
+
     dao.save();
-
-    // if (proposal.proposalType == 'VPERIOD') {
-    //   dao.votingPeriod = getVotingPeriod(event.address);
-    // }
-    // if (proposal.proposalType == 'QUORUM') {
-    //   dao.quorum = getQuorum(event.address);
-    // }
-    // if (proposal.proposalType == 'SUPERMAJORITY') {
-    //   dao.supermajority = getSupermajority(event.address);
-    // }
-
-    // dao.save();
   }
 }
 
