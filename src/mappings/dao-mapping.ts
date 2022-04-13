@@ -165,9 +165,6 @@ export function handleTransfer(event: TransferEvent): void {
     memberFrom.shares = getBalance(event.address, event.params.from);
     memberTo.shares = getBalance(event.address, event.params.to);
 
-    memberFrom.shares = memberFrom.shares.minus(event.params.amount);
-    memberTo.shares = memberTo.shares.plus(event.params.amount);
-
     const token = createToken(event.address);
 
     token.save();
