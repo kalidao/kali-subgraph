@@ -81,7 +81,6 @@ type Proposal @entity {
   dao: DAO!
   proposer: Bytes!
   proposalType: ProposalType
-  type: String!
   description: String!
   sponsor: Bytes
   sponsored: Boolean
