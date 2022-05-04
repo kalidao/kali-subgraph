@@ -34,7 +34,7 @@ export function handleExtensionSet(event: ExtensionSetEvent): void {
 export function handleExtensionCalled(event: ExtensionCalledEvent): void {
   const daoId = event.params.dao.toHexString();
   const crowdsaleId = daoId + '-crowdsaleV2';
-  const purchaserId = crowdsaleId + event.transaction.index.toString();
+  const purchaseId = crowdsaleId + event.transaction.index.toString();
 
   let crowdsale = Crowdsale.load(crowdsaleId);
 
@@ -51,15 +51,11 @@ export function handleExtensionCalled(event: ExtensionCalledEvent): void {
   crowdsale.amountPurchased = crowdsale.amountPurchased.plus(event.params.amountOut);
   crowdsale.save();
 
-  const purchase = new Purchase(purchaserId);
+  const purchase = new Purchase(purchaseId);
   purchase.crowdsale = crowdsaleId;
   purchase.purchaser = event.params.purchaser;
-
-  if (!purchase.purchased) {
-    purchase.purchased = BigInt.fromI32(0);
-  }
-
-  purchase.purchased = purchase.purchased.plus(event.params.amountOut);
+  purchase.purchased = event.params.amountOut;
+  
   purchase.save();
 
   const tokenId = daoId + '-token';
