@@ -2,10 +2,20 @@
     "network": "matic",
     "address": "0xeb37fc7F7781C4B6395b093359aaaFD285DaA6b9",
     "startBlock": 24918725,
-    "crowdsaleAddress": "0x0AE06840C05bf261B1798571696F58F9Ac3b3174",
-    "redemptionAddress": "0xC43AE97f12d979FCAe346E93b62d747963956d63",
-    "tributeAddress": "0xAe3357E4D401495Cfe6e6022734E11293BC63dfb",
-    "crowdsaleStartBlock": 24638724,
-    "redemptionStartBlock": 24591664,
-    "tributeStartBlock": 24590968
+    "crowdsaleV1": {
+        "address": "0x0AE06840C05bf261B1798571696F58F9Ac3b3174",
+        "startBlock": 24638724
+    },
+    "crowdsaleV2": {
+        "address": "0x77eC90818fD2116D29A7C39ea3D21808F09986EE",
+        "startBlock": 27907307
+    },
+    "tribute": {
+        "address": "0xAe3357E4D401495Cfe6e6022734E11293BC63dfb",
+        "startBlock": 24590968
+    },
+    "redemption": {
+        "address": "0xC43AE97f12d979FCAe346E93b62d747963956d63",
+        "startBlock": 24591664
+    }
 }
