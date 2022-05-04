@@ -72,7 +72,7 @@ type Member @entity {
 type Delegate @entity {
   id: ID!
   dao: DAO!
-  balance: BigInt!
+  balance: BigInt
   delegatee: [Member!] @derivedFrom(field: "delegate")
 }
 
@@ -100,6 +100,7 @@ type Vote @entity {
 type Crowdsale @entity {
   id: ID!
   dao: DAO!
+  version: Int!
   active: Boolean!
   listId: BigInt
   purchaseToken: Bytes
@@ -109,6 +110,7 @@ type Crowdsale @entity {
   details: String
   purchase: [Purchase!] @derivedFrom(field: "crowdsale")
   amountPurchased: BigInt!
+  personalLimit: BigInt
 }
 
 type Purchase @entity {

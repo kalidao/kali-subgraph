@@ -1,20 +1,20 @@
-import { Address, BigInt, log } from '@graphprotocol/graph-ts';
+import { BigInt } from '@graphprotocol/graph-ts';
 import { Crowdsale, Purchase, Token } from '../../generated/schema';
 import {
   ExtensionSet as ExtensionSetEvent,
   ExtensionCalled as ExtensionCalledEvent,
-  KaliDAOcrowdsale,
-} from '../../generated/KaliDAOcrowdsale/KaliDAOcrowdsale';
+} from '../../generated/KaliDAOcrowdsaleV1/KaliDAOcrowdsaleV1';
 import { createToken, tokenTotalSupply } from '../helpers/token-helpers';
 
 // ExtensionSet
 export function handleExtensionSet(event: ExtensionSetEvent): void {
   const daoId = event.params.dao.toHexString();
-  const crowdsaleId = daoId + '-crowdsale';
+  const crowdsaleId = daoId + '-crowdsaleV1';
   const crowdsale = new Crowdsale(crowdsaleId);
 
   crowdsale.active = true;
   crowdsale.dao = daoId;
+  crowdsale.version = 1;
   crowdsale.purchaseLimit = event.params.purchaseLimit;
   crowdsale.purchaseMultiplier = event.params.purchaseMultiplier;
   crowdsale.purchaseToken = event.params.purchaseToken;
@@ -29,7 +29,7 @@ export function handleExtensionSet(event: ExtensionSetEvent): void {
 // ExtensionCalled
 export function handleExtensionCalled(event: ExtensionCalledEvent): void {
   const daoId = event.params.dao.toHexString();
-  const crowdsaleId = daoId + '-crowdsale';
+  const crowdsaleId = daoId + '-crowdsaleV1';
   const purchaserId = crowdsaleId + event.transaction.index.toString();
 
   let crowdsale = Crowdsale.load(crowdsaleId);
@@ -70,14 +70,4 @@ export function handleExtensionCalled(event: ExtensionCalledEvent): void {
   token.save();
 }
 
-// Helpers
-export function getAmountPurchased(contractAddress: Address, dao: Address): BigInt {
-  const crowdsale = KaliDAOcrowdsale.bind(contractAddress);
-  const totalAmountPurchased = crowdsale.try_crowdsales(dao);
 
-  if (totalAmountPurchased.reverted) {
-    log.error('getCrowdsales reverted at {}', [dao.toHexString()]);
-  }
-
-  return totalAmountPurchased.value.value4 as BigInt;
-}

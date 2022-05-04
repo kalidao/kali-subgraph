@@ -44,7 +44,7 @@ export function tokenSymbol(address: Address): string {
   return symbol.value;
 }
 
-export function tokenTotalSupply(address: Address): BigInt | null {
+export function tokenTotalSupply(address: Address): BigInt {
   const contract = Erc20.bind(address);
 
   let totalSupply = contract.try_totalSupply();

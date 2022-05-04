@@ -34,12 +34,12 @@ dataSources:
       file: ./src/mappings/factory-mapping.ts
     
   - kind: ethereum/contract
-    name: KaliDAOcrowdsale
+    name: KaliDAOcrowdsaleV1
     network: {{network}}
     source:
-      address: '{{crowdsaleAddress}}'
-      abi: KaliDAOcrowdsale
-      startBlock: {{crowdsaleStartBlock}}
+      address: '{{crowdsaleV1.address}}'
+      abi: KaliDAOcrowdsaleV1
+      startBlock: {{crowdsaleV1.startBlock}}
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -50,8 +50,8 @@ dataSources:
         - Token
         - Purchase
       abis:
-        - name: KaliDAOcrowdsale
-          file: ./abis/KaliDAOcrowdsale.json
+        - name: KaliDAOcrowdsaleV1
+          file: ./abis/KaliDAOcrowdsaleV1.json
         - name: Erc20
           file: ./abis/Erc20.json
       eventHandlers:
@@ -59,15 +59,49 @@ dataSources:
           handler: handleExtensionSet
         - event: ExtensionCalled(indexed address,indexed address,uint256)
           handler: handleExtensionCalled
-      file: ./src/mappings/crowdsale-mapping.ts
+      file: ./src/mappings/crowdsale-v1-mapping.ts
+
+  - kind: ethereum/contract
+    name: KaliDAOcrowdsaleV2
+    network: {{network}}
+    source:
+      address: '{{crowdsaleV2.address}}'
+      abi: KaliDAOcrowdsaleV2
+      startBlock: {{crowdsaleV2.startBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - Crowdsale
+        - Treasury
+        - Token
+        - Purchase
+      abis:
+        - name: KaliDAOcrowdsaleV2
+          file: ./abis/KaliDAOcrowdsaleV2.json
+        - name: Erc20
+          file: ./abis/Erc20.json
+      eventHandlers:
+        - event: ExtensionSet(indexed address,uint256,uint8,address,uint32,uint96,uint96,string)
+          handler: handleExtensionSet
+        - event: ExtensionCalled(indexed address,indexed address,uint256)
+          handler: handleExtensionCalled
+        - event: ClaimTransferred(indexed address,indexed address)
+          handler: handleClaimTransferred
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: KaliRateSet(uint8)
+          handler: handleKaliRateSet
+      file: ./src/mappings/crowdsale-v2-mapping.ts
 
   - kind: ethereum/contract
     name: KaliDAOtribute
     network: {{network}}
     source:
-      address: '{{tributeAddress}}'
+      address: '{{tribute.address}}'
       abi: KaliDAOtribute
-      startBlock: {{tributeStartBlock}}
+      startBlock: {{tribute.startBlock}}
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -93,9 +127,9 @@ dataSources:
     name: KaliDAOredemption
     network: {{network}}
     source:
-      address: '{{redemptionAddress}}'
+      address: '{{redemption.address}}'
       abi: KaliDAOredemption
-      startBlock: {{redemptionStartBlock}}
+      startBlock: {{redemption.startBlock}}
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6

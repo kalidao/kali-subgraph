@@ -206,9 +206,9 @@ export function handleDelegateChanged(event: DelegateChangedEvent): void {
   }
 
   member.delegate = delegateId;
-  delegate.dao = daoId;
-
   member.save();
+
+  delegate.dao = daoId;
   delegate.save();
 }
 
@@ -220,7 +220,8 @@ export function handleDelegateVotesChanged(event: DelegateVotesChangedEvent): vo
   if (delegate === null) {
     delegate = new Delegate(delegateId);
   }
-
+  
+  delegate.dao = daoId;
   delegate.balance = event.params.newBalance;
   delegate.save();
 }
