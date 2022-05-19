@@ -15,56 +15,68 @@ export function createToken(dao: Address): Token {
   token.symbol = tokenSymbol(dao);
   token.totalSupply = tokenTotalSupply(dao);
 
-  log.error('token of {}', [dao.toHexString()]);
+  log.info('token of {}', [dao.toHexString()]);
 
   return token as Token;
 }
 
-export function tokenName(address: Address): string {
+export function tokenName(address: Address): string | null {
   let contract = Erc20.bind(address);
 
-  let name = contract.try_name();
+  let name = 'Unknown'
+  let result = contract.try_name();
 
-  if (name.reverted) {
-    log.error('Name revert. Address - {}', [address.toHexString()]);
+  if (result.reverted) {
+    log.info('Name revert. Address - {}', [address.toHexString()]);
+  } else {
+    name = result.value
   }
 
-  return name.value;
+  return name;
 }
 
-export function tokenSymbol(address: Address): string {
+export function tokenSymbol(address: Address): string | null {
   let contract = Erc20.bind(address);
-
-  let symbol = contract.try_symbol();
-
-  if (symbol.reverted) {
-    log.error('Symbol revert. Address - {}', [address.toHexString()]);
+  let symbol = 'UNKNOWN'
+  let result = contract.try_symbol();
+  if (result.reverted) {
+    log.info('Symbol revert. Address - {}', [address.toHexString()]);
+  } else {
+    symbol = result.value
   }
-
-  return symbol.value;
+  
+  return symbol
 }
 
 export function tokenTotalSupply(address: Address): BigInt {
   const contract = Erc20.bind(address);
-
-  let totalSupply = contract.try_totalSupply();
-  if (totalSupply.reverted) {
-    log.error('Total Supply revert. Address - {}', [address.toHexString()]);
+  
+  
+  let totalSupply = BigInt.fromI32(0)
+  let result = contract.try_totalSupply();
+  if (result.reverted) {
+    log.info('Total Supply revert. Address - {}', [address.toHexString()]);
+  } else {
+    totalSupply = result.value
   }
 
-  return totalSupply.value;
+  return totalSupply;
 }
 
 export function getBalance(contractAddress: Address, address: Address): BigInt {
   const contract = Erc20.bind(contractAddress);
-  let balance = contract.try_balanceOf(address);
+  
+  let balance = BigInt.fromI32(0)
+  let result = contract.try_balanceOf(address);
 
-  if (balance.reverted) {
-    log.error('balanceOf reverted at contract {} for account {}', [
+  if (result.reverted) {
+    log.info('balanceOf reverted at contract {} for account {}', [
       contractAddress.toHexString(),
       address.toHexString(),
     ]);
+  } else {
+    balance = result.value
   }
 
-  return balance.value;
+  return balance;
 }

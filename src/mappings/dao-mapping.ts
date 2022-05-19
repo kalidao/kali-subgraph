@@ -29,6 +29,7 @@ export function handleNewProposal(event: NewProposalEvent): void {
   const proposalType = validateProposalType(event.params.proposalType);
 
   proposal.dao = daoId;
+  proposal.serial = event.params.proposal;
   proposal.proposalType = proposalType;
   proposal.proposer = event.params.proposer;
   proposal.description = event.params.description;

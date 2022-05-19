@@ -78,6 +78,7 @@ type Delegate @entity {
 
 type Proposal @entity {
   id: ID!
+  serial: BigInt
   dao: DAO!
   proposer: Bytes!
   proposalType: ProposalType
