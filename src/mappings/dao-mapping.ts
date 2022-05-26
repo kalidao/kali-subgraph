@@ -30,6 +30,7 @@ export function handleNewProposal(event: NewProposalEvent): void {
 
   proposal.dao = daoId;
   proposal.serial = event.params.proposal;
+  proposal.transactionHash = event.transaction.hash;
   proposal.proposalType = proposalType;
   proposal.proposer = event.params.proposer;
   proposal.description = event.params.description;

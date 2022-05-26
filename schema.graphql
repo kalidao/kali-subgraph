@@ -79,6 +79,7 @@ type Delegate @entity {
 type Proposal @entity {
   id: ID!
   serial: BigInt
+  transactionHash: Bytes!
   dao: DAO!
   proposer: Bytes!
   proposalType: ProposalType
