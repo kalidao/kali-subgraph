@@ -26,7 +26,6 @@ type DAO @entity {
   birth: BigInt!
   founder: Bytes!
   token: Token! @derivedFrom(field: "dao")
-  treasury: Treasury! @derivedFrom(field: "dao")
   docs: String!
   votingPeriod: BigInt!
   gracePeriod: BigInt!
@@ -40,13 +39,6 @@ type DAO @entity {
   tribute: Tribute @derivedFrom(field: "dao")
 }
 
-type Treasury @entity {
-  id: ID!
-  dao: DAO!
-  token: [Token!] @derivedFrom(field: "treasury")
-  balance: BigInt
-}
-
 type Token @entity {
   id: ID!
   dao: DAO!
@@ -54,7 +46,6 @@ type Token @entity {
   symbol: String
   totalSupply: BigInt
   paused: Boolean
-  treasury: Treasury
 }
 
 type Member @entity {
@@ -153,5 +144,4 @@ type TributeProposal @entity {
   isNFT: Boolean!
   value: BigInt!
   status: String
-  token: Token
 }

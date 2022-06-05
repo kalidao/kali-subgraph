@@ -123,7 +123,11 @@ export function handleTransfer(event: TransferEvent): void {
       member.address = event.params.to;
     }
 
-    const token = createToken(event.address);
+    let token = Token.load(daoId + '-token')
+
+    if (token === null) {
+      token = createToken(event.address);
+    }
 
     member.shares = member.shares.plus(event.params.amount);
     member.save();
@@ -141,7 +145,11 @@ export function handleTransfer(event: TransferEvent): void {
       member.address = event.params.from;
     }
 
-    const token = createToken(event.address);
+    let token = Token.load(daoId + '-token')
+
+    if (token === null) {
+      token = createToken(event.address);
+    }
 
     member.shares = member.shares.minus(event.params.amount);
     member.save();
@@ -167,7 +175,11 @@ export function handleTransfer(event: TransferEvent): void {
     memberFrom.shares = getBalance(event.address, event.params.from);
     memberTo.shares = getBalance(event.address, event.params.to);
 
-    const token = createToken(event.address);
+    let token = Token.load(daoId + '-token')
+
+    if (token === null) {
+      token = createToken(event.address);
+    }
 
     token.save();
     memberFrom.save();
@@ -235,7 +247,7 @@ export function handlePauseFlipped(event: PauseFlippedEvent): void {
   let token = Token.load(tokenId);
 
   if (token === null) {
-    token = new Token(tokenId);
+    token = createToken(event.address);
   }
 
   token.paused = event.params.paused;

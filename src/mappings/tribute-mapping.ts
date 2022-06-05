@@ -27,18 +27,18 @@ export function handleNewTributeProposal(event: NewTributeProposalEvent): void {
   tributeProposal.asset = event.params.asset;
   tributeProposal.isNFT = event.params.nft;
 
-  if (!event.params.nft && event.params.asset.toHexString() != ZERO_ADDRESS) {
-    const tokenId = daoId + event.params.asset.toHexString();
-    const token = new Token(tokenId);
+  // if (!event.params.nft && event.params.asset.toHexString() != ZERO_ADDRESS) {
+  //   const tokenId = daoId + event.params.asset.toHexString();
+  //   const token = new Token(tokenId);
 
-    tributeProposal.token = tokenId;
-    token.dao = daoId;
-    token.name = tokenName(event.params.asset);
-    token.symbol = tokenSymbol(event.params.asset);
-    token.totalSupply = tokenTotalSupply(event.params.asset);
+  //   tributeProposal.token = tokenId;
+  //   token.dao = daoId;
+  //   token.name = tokenName(event.params.asset);
+  //   token.symbol = tokenSymbol(event.params.asset);
+  //   token.totalSupply = tokenTotalSupply(event.params.asset);
 
-    token.save();
-  }
+  //   token.save();
+  // }
 
   tributeProposal.value = event.params.value;
   tributeProposal.proposer = event.params.proposer;
