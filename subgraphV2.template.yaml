@@ -1,0 +1,160 @@
+specVersion: 0.0.2
+description: KaliDAO
+repository: https://github.com/nerderlyne/kali-subgraph
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: KaliDAOFactory
+    network: {{network}}
+    source:
+      address: '{{address}}'
+      abi: KaliDAOFactory
+      startBlock: {{startBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - DAO
+        - Token
+        - Member
+        - Tribute
+        - Crowdsale
+        - Redemption
+      abis:
+        - name: KaliDAOFactory
+          file: ./abis/KaliDAOFactory.json
+        - name: Erc20
+          file: ./abis/Erc20.json
+      eventHandlers:
+        - event: DAOdeployed(indexed address,string,string,string,bool,address[],bytes[],address[],uint256[],uint32[16])
+          handler: handleDAOdeployed
+      file: ./src/mappings/factory-mapping.ts
+    
+  - kind: ethereum/contract
+    name: KaliDAOcrowdsaleV2
+    network: {{network}}
+    source:
+      address: '{{crowdsaleV2.address}}'
+      abi: KaliDAOcrowdsaleV2
+      startBlock: {{crowdsaleV2.startBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - Crowdsale
+        - Token
+        - Purchase
+      abis:
+        - name: KaliDAOcrowdsaleV2
+          file: ./abis/KaliDAOcrowdsaleV2.json
+        - name: Erc20
+          file: ./abis/Erc20.json
+      eventHandlers:
+        - event: ExtensionSet(indexed address,uint256,uint8,address,uint32,uint96,uint96,string)
+          handler: handleExtensionSet
+        - event: ExtensionCalled(indexed address,indexed address,uint256)
+          handler: handleExtensionCalled
+        - event: ClaimTransferred(indexed address,indexed address)
+          handler: handleClaimTransferred
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: KaliRateSet(uint8)
+          handler: handleKaliRateSet
+      file: ./src/mappings/crowdsale-v2-mapping.ts
+
+  - kind: ethereum/contract
+    name: KaliDAOtribute
+    network: {{network}}
+    source:
+      address: '{{tribute.address}}'
+      abi: KaliDAOtribute
+      startBlock: {{tribute.startBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - Tribute
+      abis:
+        - name: KaliDAOtribute
+          file: ./abis/KaliDAOtribute.json
+        - name: Erc20
+          file: ./abis/Erc20.json
+      eventHandlers:
+        - event: NewTributeProposal(indexed address,indexed address,indexed uint256,address,bool,uint256)
+          handler: handleNewTributeProposal
+        - event: TributeProposalCancelled(indexed address,indexed uint256)
+          handler: handleTributeProposalCancelled
+        - event: TributeProposalReleased(indexed address,indexed uint256)
+          handler: handleTributeProposalReleased
+      file: ./src/mappings/tribute-mapping.ts
+
+  - kind: ethereum/contract
+    name: KaliDAOredemption
+    network: {{network}}
+    source:
+      address: '{{redemption.address}}'
+      abi: KaliDAOredemption
+      startBlock: {{redemption.startBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - Redemption
+      abis:
+        - name: KaliDAOredemption
+          file: ./abis/KaliDAOredemption.json
+      eventHandlers:
+        - event: ExtensionSet(indexed address,address[],indexed uint256)
+          handler: handleExtensionSet
+        - event: ExtensionCalled(indexed address,indexed address,indexed uint256)
+          handler: handleExtensionCalled
+        - event: TokensAdded(indexed address,address[])
+          handler: handleTokenAdded
+        - event: TokensRemoved(indexed address,uint256[])
+          handler: handleTokenRemoved
+      file: ./src/mappings/redemption-mapping.ts
+templates:
+  - name: KaliDAO
+    kind: ethereum/contract
+    network: {{network}}
+    source:
+      abi: KaliDAO
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - DAO
+        - Token
+        - Member
+        - Proposal
+      abis:
+        - name: KaliDAO
+          file: ./abis/KaliDAO.json
+        - name: Erc20
+          file: ./abis/Erc20.json
+      eventHandlers:
+        - event: DelegateChanged(indexed address,indexed address,indexed address)
+          handler: handleDelegateChanged
+        - event: DelegateVotesChanged(indexed address,uint256,uint256)
+          handler: handleDelegateVotesChanged
+        - event: NewProposal(indexed address,indexed uint256,indexed uint8,string,address[],uint256[],bytes[])
+          handler: handleNewProposal
+        - event: ProposalProcessed(indexed uint256,indexed bool)
+          handler: handleProposalProcessed
+        - event: ProposalCancelled(indexed address,indexed uint256)
+          handler: handleProposalCancelled
+        - event: ProposalSponsored(indexed address,indexed uint256)
+          handler: handleProposalSponsored
+        - event: VoteCast(indexed address,indexed uint256,indexed bool)
+          handler: handleVoteCast
+        - event: PauseFlipped(bool)
+          handler: handlePauseFlipped
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+      file: ./src/mappings/dao-mapping.ts

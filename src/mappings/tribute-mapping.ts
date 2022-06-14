@@ -1,31 +1,31 @@
-import { Token, Tribute, TributeProposal } from '../../generated/schema';
+import { Token, Tribute, TributeProposal } from '../../generated/schema'
 import {
   NewTributeProposal as NewTributeProposalEvent,
   TributeProposalCancelled as TributeProposalCancelledEvent,
   TributeProposalReleased as TributeProposalReleasedEvent,
-} from '../../generated/KaliDAOtribute/KaliDAOtribute';
-import { tokenName, tokenSymbol, tokenTotalSupply } from '../helpers/token-helpers';
-import { ZERO_ADDRESS } from '../helpers/constants';
+} from '../../generated/KaliDAOtribute/KaliDAOtribute'
+import { tokenName, tokenSymbol, tokenTotalSupply } from '../helpers/token-helpers'
+import { ZERO_ADDRESS } from '../helpers/constants'
 
 // NewTributeProposal
 export function handleNewTributeProposal(event: NewTributeProposalEvent): void {
-  const daoId = event.params.dao.toHexString();
-  const tributeId = daoId + '-tribute';
-  let tribute = Tribute.load(tributeId);
+  const daoId = event.params.dao.toHexString()
+  const tributeId = daoId + '-tribute'
+  let tribute = Tribute.load(tributeId)
 
   if (tribute === null) {
-    tribute = new Tribute(tributeId);
+    tribute = new Tribute(tributeId)
   }
 
-  tribute.dao = daoId;
-  tribute.active = true;
+  tribute.dao = daoId
+  tribute.active = true
 
-  tribute.save();
+  tribute.save()
 
-  const tributeProposalId = tributeId + '-' + event.params.proposal.toHexString();
-  const tributeProposal = new TributeProposal(tributeProposalId);
-  tributeProposal.asset = event.params.asset;
-  tributeProposal.isNFT = event.params.nft;
+  const tributeProposalId = tributeId + '-' + event.params.proposal.toHexString()
+  const tributeProposal = new TributeProposal(tributeProposalId)
+  tributeProposal.asset = event.params.asset
+  tributeProposal.isNFT = event.params.nft
 
   // if (!event.params.nft && event.params.asset.toHexString() != ZERO_ADDRESS) {
   //   const tokenId = daoId + event.params.asset.toHexString();
@@ -40,38 +40,38 @@ export function handleNewTributeProposal(event: NewTributeProposalEvent): void {
   //   token.save();
   // }
 
-  tributeProposal.value = event.params.value;
-  tributeProposal.proposer = event.params.proposer;
-  tributeProposal.status = 'Proposed';
+  tributeProposal.value = event.params.value
+  tributeProposal.proposer = event.params.proposer
+  tributeProposal.status = 'Proposed'
 
-  tributeProposal.save();
+  tributeProposal.save()
 }
 
 // TributeProposalCancelled
 export function handleTributeProposalCancelled(event: TributeProposalCancelledEvent): void {
-  const daoId = event.params.dao.toHexString();
-  const tributeId = daoId + '-tribute';
-  const tributeProposalId = tributeId + '-' + event.params.proposal.toHexString();
+  const daoId = event.params.dao.toHexString()
+  const tributeId = daoId + '-tribute'
+  const tributeProposalId = tributeId + '-' + event.params.proposal.toHexString()
 
-  let tributeProposal = TributeProposal.load(tributeProposalId);
+  let tributeProposal = TributeProposal.load(tributeProposalId)
 
   if (tributeProposal === null) {
-    tributeProposal = new TributeProposal(tributeProposalId);
+    tributeProposal = new TributeProposal(tributeProposalId)
   }
 
-  tributeProposal.status = 'Cancelled';
+  tributeProposal.status = 'Cancelled'
 }
 // TributeProposalReleased
 export function handleTributeProposalReleased(event: TributeProposalReleasedEvent): void {
-  const daoId = event.params.dao.toHexString();
-  const tributeId = daoId + '-tribute';
-  const tributeProposalId = tributeId + '-' + event.params.proposal.toHexString();
+  const daoId = event.params.dao.toHexString()
+  const tributeId = daoId + '-tribute'
+  const tributeProposalId = tributeId + '-' + event.params.proposal.toHexString()
 
-  let tributeProposal = TributeProposal.load(tributeProposalId);
+  let tributeProposal = TributeProposal.load(tributeProposalId)
 
   if (tributeProposal === null) {
-    tributeProposal = new TributeProposal(tributeProposalId);
+    tributeProposal = new TributeProposal(tributeProposalId)
   }
 
-  tributeProposal.status = 'Released';
+  tributeProposal.status = 'Released'
 }

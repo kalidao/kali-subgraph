@@ -1,0 +1,17 @@
+{
+  "network": "optimism",
+  "address": "0xe8E08113Dc0f2B6392A4bD14d7F1d9AA6E89e1e3",
+  "startBlock": 11774006,
+  "crowdsaleV2": {
+    "address": "0x05622EF2b9290f19230FD10e80BB468c51e17b2d",
+    "startBlock": 11775501
+  },
+  "tribute": {
+    "address": "0xc64F31b76FDc6B45d703B95A95a3A7F8A0B509aE",
+    "startBlock": 11774528
+  },
+  "redemption": {
+    "address": "0x2b8f116e4D9E73A3A9E7CAF1655B9FC01588Db8d",
+    "startBlock": 11774722
+  }
+}
