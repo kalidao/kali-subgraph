@@ -145,6 +145,31 @@ dataSources:
         - event: TokensRemoved(indexed address,uint256[])
           handler: handleTokenRemoved
       file: ./src/mappings/redemption-mapping.ts
+  - kind: ethereum/contract
+    name: KaliRicardian
+    network: {{network}}
+    source:
+      address: '{{ricardian.address}}'
+      abi: Ricardian
+      startBlock: {{ricardian.startBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - Ricardian
+      abis:
+        - name: Ricardian
+          file: ./abis/Ricardian.json
+      eventHandlers:
+        - event: Approval(indexed address,indexed address,indexed uint256)
+          handler: handleApproval
+        - event: ApprovalForAll(indexed address,indexed address,bool)
+          handler: handleApprovalForAll
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
+      file: ./src/mappings/ricardian-mappings.ts
+
 templates:
   - name: KaliDAO
     kind: ethereum/contract
