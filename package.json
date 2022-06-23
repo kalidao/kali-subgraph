@@ -16,11 +16,13 @@
     "prepare:polygon": "mustache config/polygon.json subgraph.template.yaml > subgraph.yaml",
     "prepare:arbitrum": "mustache config/arbitrum.json subgraph.template.yaml > subgraph.yaml",
     "prepare:optimism": "mustache config/optimism.json subgraphV2.template.yaml > subgraph.yaml",
+    "prepare:goerli": "mustache config/goerli.json subgraphV2.template.yaml > subgraph.yaml",
     "deploy-rinkeby": "yarn prepare:rinkeby && graph codegen && graph build && graph deploy --product hosted-service nerderlyne/kali-rinkeby",
     "deploy-mainnet": "yarn prepare:mainnet && graph codegen && graph build && graph deploy --product hosted-service nerderlyne/kali-mainnet",
     "deploy-arbitrum": "yarn prepare:arbitrum && graph codegen && graph build && graph deploy --product hosted-service nerderlyne/kali-arbitrum",
     "deploy-polygon": "yarn prepare:polygon && graph codegen && graph build && graph deploy --product hosted-service nerderlyne/kali-matic",
-    "deploy-optimism": "yarn prepare:optimism && graph codegen && graph build && graph deploy --product hosted-service nerderlyne/kali-optimism"
+    "deploy-optimism": "yarn prepare:optimism && graph codegen && graph build && graph deploy --product hosted-service nerderlyne/kali-optimism",
+    "deploy-goerli": "yarn prepare:goerli && graph codegen && graph build && graph deploy --product hosted-service nerderlyne/kali-goerli"
   },
   "dependencies": {
     "@graphprotocol/graph-cli": "0.29.1",
