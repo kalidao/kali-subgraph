@@ -69,17 +69,19 @@ type Delegate @entity {
 
 type Proposal @entity {
   id: ID!
-  serial: BigInt
-  transactionHash: Bytes!
   dao: DAO!
+  serial: BigInt!
+  transactionHash: Bytes!
+  creationTime: BigInt!
+  votingStarts: BigInt!
   proposer: Bytes!
   proposalType: ProposalType
   description: String!
   sponsor: Bytes
   sponsored: Boolean
+  cancelled: Boolean
   status: Boolean
   votes: [Vote!] @derivedFrom(field: "proposal")
-  creationTime: BigInt!
 }
 
 type Vote @entity {
@@ -88,6 +90,7 @@ type Vote @entity {
   proposal: Proposal!
   voter: Bytes
   vote: Boolean
+  weight: BigInt
 }
 
 type Crowdsale @entity {

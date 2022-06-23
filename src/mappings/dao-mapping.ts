@@ -13,7 +13,14 @@ import {
 } from '../../generated/templates/KaliDAO/KaliDAO'
 import { Token, Member, Proposal, Vote, Delegate, DAO } from '../../generated/schema'
 import { createToken, getBalance } from '../helpers/token-helpers'
-import { getQuorum, getSupermajority, getVotingPeriod, validateProposalType } from '../helpers/dao-helpers'
+import {
+  getQuorum,
+  getSupermajority,
+  getVotingPeriod,
+  getVotingPeriodStarts,
+  validateProposalType,
+  getVotingWeight,
+} from '../helpers/dao-helpers'
 import { ZERO_ADDRESS } from '../helpers/constants'
 
 export function handleNewProposal(event: NewProposalEvent): void {
@@ -23,6 +30,8 @@ export function handleNewProposal(event: NewProposalEvent): void {
   const proposal = new Proposal(proposalId)
   const proposalType = validateProposalType(event.params.proposalType)
 
+  const votingPeriodStarts = getVotingPeriodStarts(event.address, event.params.proposal)
+
   proposal.dao = daoId
   proposal.serial = event.params.proposal
   proposal.transactionHash = event.transaction.hash
@@ -30,6 +39,13 @@ export function handleNewProposal(event: NewProposalEvent): void {
   proposal.proposer = event.params.proposer
   proposal.description = event.params.description
   proposal.creationTime = event.block.timestamp
+  proposal.votingStarts = votingPeriodStarts
+
+  if (votingPeriodStarts > BigInt.fromI32(0)) {
+    proposal.sponsored = true
+  } else {
+    proposal.sponsored = false
+  }
 
   proposal.save()
 }
@@ -68,6 +84,7 @@ export function handleProposalCancelled(event: ProposalCancelledEvent): void {
   }
 
   proposal.proposer = event.params.proposer
+  proposal.cancelled = true
   proposal.status = false
   proposal.save()
 }
@@ -80,7 +97,9 @@ export function handleProposalSponsored(event: ProposalSponsoredEvent): void {
   if (proposal === null) {
     proposal = new Proposal(proposalId)
   }
+  const votingPeriodStarts = getVotingPeriodStarts(event.address, event.params.proposal)
 
+  proposal.votingStarts = votingPeriodStarts
   proposal.sponsor = event.params.sponsor
   proposal.sponsored = true
 
@@ -98,6 +117,7 @@ export function handleVoteCast(event: VoteCastEvent): void {
   vote.proposal = proposalId
   vote.voter = event.params.voter
   vote.vote = event.params.approve
+  vote.weight = getVotingWeight(event.address, event.params.proposal, event.params.voter)
 
   vote.save()
 }
