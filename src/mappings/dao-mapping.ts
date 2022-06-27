@@ -1,4 +1,4 @@
-import { BigInt } from '@graphprotocol/graph-ts'
+import { BigInt, Bytes } from '@graphprotocol/graph-ts'
 import {
   NewProposal as NewProposalEvent,
   ProposalCancelled as ProposalCancelledEvent,
@@ -21,6 +21,7 @@ import {
   validateProposalType,
   getVotingWeight,
 } from '../helpers/dao-helpers'
+import { tokenTotalSupply } from '../helpers/token-helpers'
 import { ZERO_ADDRESS } from '../helpers/constants'
 
 export function handleNewProposal(event: NewProposalEvent): void {
@@ -40,6 +41,11 @@ export function handleNewProposal(event: NewProposalEvent): void {
   proposal.description = event.params.description
   proposal.creationTime = event.block.timestamp
   proposal.votingStarts = votingPeriodStarts
+
+  // Proposal Arrays
+  proposal.accounts = event.params.accounts.map<Bytes>((address) => address as Bytes)
+  proposal.amounts = event.params.amounts.map<BigInt>((amount) => amount as BigInt)
+  proposal.payloads = event.params.payloads.map<Bytes>((payload) => payload as Bytes)
 
   if (votingPeriodStarts > BigInt.fromI32(0)) {
     proposal.sponsored = true
@@ -63,8 +69,10 @@ export function handleProposalProcessed(event: ProposalProcessedEvent): void {
   proposal.save()
 
   if (event.params.didProposalPass) {
-    const dao = new DAO(event.address.toHexString())
-
+    const daoId = event.address.toHexString()
+    const dao = new DAO(daoId)
+    const token = new Token(daoId + '-token')
+    // TODO: Fetch other data from the DAO contract as well
     // fetching all if passed because conditional isn't working???!
     dao.quorum = getQuorum(event.address)
     dao.votingPeriod = getVotingPeriod(event.address)
@@ -85,7 +93,7 @@ export function handleProposalCancelled(event: ProposalCancelledEvent): void {
 
   proposal.proposer = event.params.proposer
   proposal.cancelled = true
-  proposal.status = false
+
   proposal.save()
 }
 
@@ -146,6 +154,7 @@ export function handleTransfer(event: TransferEvent): void {
 
     member.shares = member.shares.plus(event.params.amount)
     member.save()
+    token.totalSupply = tokenTotalSupply(event.address)
     token.save()
 
     // Burn
@@ -165,7 +174,7 @@ export function handleTransfer(event: TransferEvent): void {
     if (token === null) {
       token = createToken(event.address)
     }
-
+    token.totalSupply = tokenTotalSupply(event.address)
     member.shares = member.shares.minus(event.params.amount)
     member.save()
     token.save()
@@ -195,7 +204,7 @@ export function handleTransfer(event: TransferEvent): void {
     if (token === null) {
       token = createToken(event.address)
     }
-
+    token.totalSupply = tokenTotalSupply(event.address)
     token.save()
     memberFrom.save()
     memberTo.save()

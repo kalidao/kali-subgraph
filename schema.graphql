@@ -76,6 +76,9 @@ type Proposal @entity {
   votingStarts: BigInt!
   proposer: Bytes!
   proposalType: ProposalType
+  accounts: [Bytes!]
+  amounts: [BigInt!]
+  payloads: [Bytes!]
   description: String!
   sponsor: Bytes
   sponsored: Boolean

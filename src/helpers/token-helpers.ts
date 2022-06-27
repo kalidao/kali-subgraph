@@ -13,7 +13,6 @@ export function createToken(dao: Address): Token {
   token.dao = dao.toHexString()
   token.name = tokenName(dao)
   token.symbol = tokenSymbol(dao)
-  token.totalSupply = tokenTotalSupply(dao)
 
   log.info('token of {}', [dao.toHexString()])
 
