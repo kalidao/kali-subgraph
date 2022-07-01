@@ -145,6 +145,28 @@ dataSources:
         - event: TokensRemoved(indexed address,uint256[])
           handler: handleTokenRemoved
       file: ./src/mappings/redemption-mapping.ts
+  - kind: ethereum/contract
+    name: ProjectManagement 
+    network: {{network}}
+    source:
+      address: '{{projectmanagement.address}}'
+      abi: ProjectManagement
+      startBlock: {{projectmanagement.startBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - Project
+      abis:
+        - name: ProjectManagement
+          file: ./abis/ProjectManagement.json
+      eventHandlers:
+        - event: ExtensionSet(indexed address,(uint256,address,address,uint256,uint256,string))
+          handler: handleExtensionSet
+        - event: ExtensionCalled(indexed address,bytes[])
+          handler: handleExtensionCalled
+      file: ./src/mappings/project-management.ts
 templates:
   - name: KaliDAO
     kind: ethereum/contract

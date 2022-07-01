@@ -17,5 +17,9 @@
   "redemption": {
     "address": "0x11f44975e1B204E50108Af6BCB6539798cb15F75",
     "startBlock": 10117237
+  },
+  "projectmanagement": {
+    "address": "0x9f0ad778385a2c688533958c6ada56f201ffc246",
+    "startBlock": 10940269
   }
 }

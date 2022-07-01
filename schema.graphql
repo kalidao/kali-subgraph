@@ -37,6 +37,7 @@ type DAO @entity {
   crowdsale: Crowdsale @derivedFrom(field: "dao")
   redemption: Redemption @derivedFrom(field: "dao")
   tribute: Tribute @derivedFrom(field: "dao")
+  project: Project @derivedFrom(field: "dao")
 }
 
 type Token @entity {
@@ -150,4 +151,15 @@ type TributeProposal @entity {
   isNFT: Boolean!
   value: BigInt!
   status: String
+}
+
+type Project @entity {
+  id: ID!
+  serial: BigInt!
+  dao: DAO!
+  projectID: BigInt!
+  manager: Bytes!
+  budget: BigInt!
+  deadline: BigInt!
+  goals: String!
 }
