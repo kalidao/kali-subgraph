@@ -11,6 +11,7 @@ export function handleExtensionSet(event: ExtensionSetEvent): void {
   const projectId = daoId + '-project'
   const project = new Project(projectId)
 
+  project.active = true
   project.dao = daoId
   project.serial = event.params.project[0].toBigInt()
   project.manager = event.params.project[2].toBytes()
