@@ -145,13 +145,14 @@ dataSources:
         - event: TokensRemoved(indexed address,uint256[])
           handler: handleTokenRemoved
       file: ./src/mappings/redemption-mapping.ts
+  
   - kind: ethereum/contract
     name: ProjectManagement 
     network: {{network}}
     source:
       address: '{{projectmanagement.address}}'
       abi: ProjectManagement
-      startBlock: {{projectmanagement.startBlock}}
+      startBlock: {{projectmanagement.startblock}}
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6

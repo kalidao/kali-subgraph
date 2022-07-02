@@ -156,7 +156,6 @@ type TributeProposal @entity {
 type Project @entity {
   id: ID!
   dao: DAO!
-  serial: BigInt!
   active: Boolean!
   projectID: BigInt!
   manager: Bytes!

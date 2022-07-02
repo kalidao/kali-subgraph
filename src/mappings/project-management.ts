@@ -13,11 +13,12 @@ export function handleExtensionSet(event: ExtensionSetEvent): void {
 
   project.active = true
   project.dao = daoId
-  project.serial = event.params.project[0].toBigInt()
-  project.manager = event.params.project[2].toBytes()
-  project.budget = event.params.project[3].toBigInt()
-  project.deadline = event.params.project[4].toBigInt()
-  project.goals = event.params.project[5].toString()
+
+  project.projectID = event.params.project.id
+  project.manager = event.params.project.manager
+  project.budget = event.params.project.budget
+  project.deadline = event.params.project.deadline
+  project.goals = event.params.project.goals
 
   project.save()
 }
