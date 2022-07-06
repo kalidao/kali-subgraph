@@ -20,6 +20,7 @@ import {
   getVotingPeriodStarts,
   validateProposalType,
   getVotingWeight,
+  getDocs,
 } from '../helpers/dao-helpers'
 import { tokenTotalSupply } from '../helpers/token-helpers'
 import { ZERO_ADDRESS } from '../helpers/constants'
@@ -77,7 +78,7 @@ export function handleProposalProcessed(event: ProposalProcessedEvent): void {
     dao.quorum = getQuorum(event.address)
     dao.votingPeriod = getVotingPeriod(event.address)
     dao.supermajority = getSupermajority(event.address)
-
+    dao.docs = getDocs(event.address)
     dao.save()
   }
 }
