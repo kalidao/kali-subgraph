@@ -1,4 +1,4 @@
-import { BigInt } from '@graphprotocol/graph-ts'
+import { BigInt, store } from '@graphprotocol/graph-ts'
 import { Crowdsale, Purchase, Token } from '../../generated/schema'
 import {
   ExtensionSet as ExtensionSetEvent,
@@ -11,7 +11,15 @@ import { createToken, tokenTotalSupply } from '../helpers/token-helpers'
 
 // ExtensionSet
 export function handleExtensionSet(event: ExtensionSetEvent): void {
+  // TODO: Implement so that historical crowdsales can be accessed by their ID
   const daoId = event.params.dao.toHexString()
+  if (Crowdsale.load(daoId + '-crowdsaleV1') !== null) {
+    store.remove('Crowdsale', daoId + '-crowdsaleV1')
+  }
+  if (Crowdsale.load(daoId + '-crowdsaleV2') !== null) {
+    store.remove('Crowdsale', daoId + '-crowdsaleV2')
+  }
+
   const crowdsaleId = daoId + '-crowdsaleV2'
   const crowdsale = new Crowdsale(crowdsaleId)
 
