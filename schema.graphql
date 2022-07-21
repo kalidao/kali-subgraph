@@ -162,4 +162,13 @@ type Project @entity {
   budget: BigInt!
   deadline: BigInt!
   goals: String!
+  contribution: [Contribution!] @derivedFrom(field: "project")
+}
+
+type Contribution @entity {
+  id: ID!
+  project: Project!
+  contributor: Bytes!
+  remuneration: BigInt!
+  tribute: String!
 }
