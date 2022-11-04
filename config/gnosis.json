@@ -1,0 +1,17 @@
+{
+  "network": "gnosis",
+  "address": "0x5DEfA5A73f75bF9E2E91211C15aaB5DBbeeF2FDe",
+  "startBlock": 24763973,
+  "crowdsaleV2": {
+    "address": "0x376874Adf4146b33afC13a884C31fC3D579Eedf1",
+    "startBlock": 24764328
+  },
+  "tribute": {
+    "address": "0x2e7ba1623880c412989c2cc0593e474D45F9e9e3",
+    "startBlock": 24764071
+  },
+  "redemption": {
+    "address": "0xd36150A4A2016ed2c5A15d92Bd69EfFe1c4c3aD5",
+    "startBlock": 24764348
+  }
+}
