@@ -3,6 +3,7 @@
   "description": "Here lies the subgraph of KALI",
   "license": "GPL-3.0-or-later",
   "scripts": {
+    "auth": "graph auth --product hosted-service d9735495bc3ad7a45f9c606cbfce68c2",
     "codegen": "graph codegen",
     "build": "graph build",
     "lint": "eslint . --ext .ts",
@@ -17,12 +18,14 @@
     "prepare:arbitrum": "mustache config/arbitrum.json subgraph.template.yaml > subgraph.yaml",
     "prepare:optimism": "mustache config/optimism.json subgraphV2.template.yaml > subgraph.yaml",
     "prepare:goerli": "mustache config/goerli.json subgraphV2.template.yaml > subgraph.yaml",
+    "prepare:gnosis": "mustache config/gnosis.json subgraphV2.template.yaml > subgraph.yaml",
     "deploy-rinkeby": "yarn prepare:rinkeby && graph codegen && graph build && graph deploy --product hosted-service nerderlyne/kali-rinkeby",
     "deploy-mainnet": "yarn prepare:mainnet && graph codegen && graph build && graph deploy --product hosted-service nerderlyne/kali-mainnet",
     "deploy-arbitrum": "yarn prepare:arbitrum && graph codegen && graph build && graph deploy --product hosted-service nerderlyne/kali-arbitrum",
     "deploy-polygon": "yarn prepare:polygon && graph codegen && graph build && graph deploy --product hosted-service nerderlyne/kali-matic",
     "deploy-optimism": "yarn prepare:optimism && graph codegen && graph build && graph deploy --product hosted-service nerderlyne/kali-optimism",
-    "deploy-goerli": "yarn prepare:goerli && graph codegen && graph build && graph deploy --product hosted-service nerderlyne/kali-goerli"
+    "deploy-goerli": "yarn prepare:goerli && graph codegen && graph build && graph deploy --product hosted-service nerderlyne/kali-goerli",
+    "deploy-gnosis": "yarn prepare:gnosis && graph codegen && graph build && graph deploy --product hosted-service nerderlyne/kali-gnosis"
   },
   "dependencies": {
     "@graphprotocol/graph-cli": "0.29.1",
