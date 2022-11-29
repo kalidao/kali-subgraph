@@ -1,0 +1,17 @@
+
+tasks:
+  -
+    name: KaliDAO Subgraph
+    init: |
+      eval $(gp env -e)
+      yarn install
+      yarn codegen
+      yarn build
+
+
+
+
+vscode:
+  extensions:
+    - esbenp.prettier-vscode
+    - GraphQL.vscode-graphql
