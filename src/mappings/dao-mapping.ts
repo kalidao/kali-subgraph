@@ -59,13 +59,17 @@ export function handleNewProposal(event: NewProposalEvent): void {
 
 export function handleProposalProcessed(event: ProposalProcessedEvent): void {
   const daoId = event.address.toHexString()
-  const proposalId = daoId + '-proposal-' + event.params.proposal.toHex()
+  const proposalId = getProposalIdBySerial(event.params.proposal)
   let proposal = Proposal.load(proposalId)
+
+  function getProposalIdBySerial(serial: BigInt) {
+    return daoId + '-proposal-' + serial.toHex()
+  }
 
   // TODO handle ESCAPE proposal processing
   // ref: https://discord.com/channels/923399898769018921/925091695677309059/1042853317748985917
   // ref: https://github.com/SporosDAO/sweat-token/pull/174#issuecomment-1317455373
-  
+
   if (proposal === null) {
     proposal = new Proposal(proposalId)
   }
@@ -84,6 +88,23 @@ export function handleProposalProcessed(event: ProposalProcessedEvent): void {
     dao.supermajority = getSupermajority(event.address)
     dao.docs = getDocs(event.address)
     dao.save()
+
+    // Handle status update of an ESCAPEd (deleted) proposal
+    if (proposal.proposalType == 'ESCAPE') {
+      // retrieve targeted proposal for ESCAPE(deletion)
+      // an ESCAPE proposal must always have a non-null amounts array with its first element referring to the ESCAPED proposal
+      const escapedProposalSerial = proposal.amounts && proposal.amounts.length > 0 ? proposal.amounts[0] : null
+      if (escapedProposalSerial) {
+        // set flag to ESCAPED
+        const escapedProposalId = getProposalIdBySerial(escapedProposalSerial)
+        let escapedProposal = Proposal.load(escapedProposalId)
+        if (escapedProposal) {
+          escapedProposal.escaped = true
+          // save changes
+          escapedProposal.save()
+        }
+      }
+    }
   }
 }
 
