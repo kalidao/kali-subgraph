@@ -68,10 +68,6 @@ export function handleProposalProcessed(event: ProposalProcessedEvent): void {
   const proposalId = getProposalIdBySerial(daoId, event.params.proposal)
   let proposal = Proposal.load(proposalId)
 
-  // TODO handle ESCAPE proposal processing
-  // ref: https://discord.com/channels/923399898769018921/925091695677309059/1042853317748985917
-  // ref: https://github.com/SporosDAO/sweat-token/pull/174#issuecomment-1317455373
-
   if (proposal === null) {
     proposal = new Proposal(proposalId)
   }
