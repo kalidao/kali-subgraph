@@ -145,6 +145,8 @@ dataSources:
         - event: TokensRemoved(indexed address,uint256[])
           handler: handleTokenRemoved
       file: ./src/mappings/redemption-mapping.ts
+  
+  
 templates:
   - name: KaliDAO
     kind: ethereum/contract
