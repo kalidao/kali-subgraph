@@ -71,7 +71,7 @@ yarn deploy-goerli
 
 ## Active Deployments
 
-Bellow if a list of active live deployments of the Kali DAO subgraph that can be used by front end apps:
+Bellow is a list of active live deployments of the Kali DAO subgraph that can be used by front end apps:
 
 - [Mainnet](https://thegraph.com/hosted-service/subgraph/nerderlyne/kali-mainnet)
 - [Arbitrum](https://thegraph.com/hosted-service/subgraph/nerderlyne/kali-arbitrum)

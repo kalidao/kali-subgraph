@@ -21,6 +21,7 @@ import {
   validateProposalType,
   getVotingWeight,
   getDocs,
+  getProposalIdBySerial,
 } from '../helpers/dao-helpers'
 import { tokenTotalSupply } from '../helpers/token-helpers'
 import { ZERO_ADDRESS } from '../helpers/constants'
@@ -55,11 +56,6 @@ export function handleNewProposal(event: NewProposalEvent): void {
   }
 
   proposal.save()
-}
-
-function getProposalIdBySerial(daoId: string, serial: BigInt): string {
-  const id = daoId + '-proposal-' + serial.toHex()
-  return id
 }
 
 export function handleProposalProcessed(event: ProposalProcessedEvent): void {

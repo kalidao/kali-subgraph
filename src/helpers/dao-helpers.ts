@@ -98,3 +98,14 @@ export function getVotingWeight(dao: Address, proposalId: BigInt, voter: Address
   }
   return votingWeight
 }
+
+/**
+ *
+ * @param daoId EVM address of the proposal home DAO
+ * @param serial number of a proposal in the dao proposal array
+ * @returns ID string for a given proposal
+ */
+export function getProposalIdBySerial(daoId: string, serial: BigInt): string {
+  const id = daoId + '-proposal-' + serial.toHex()
+  return id
+}

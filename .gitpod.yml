@@ -5,11 +5,9 @@ tasks:
     init: |
       eval $(gp env -e)
       yarn install
+      yarn prepare:goerli
       yarn codegen
       yarn build
-
-
-
 
 vscode:
   extensions:
