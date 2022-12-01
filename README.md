@@ -10,7 +10,7 @@ For example to prepare the subgraph scripts for Goerli, use the following comman
 
 # Generate code
 
-Generate code from schema and config inputs:
+Generate AssemblyScript Types from `schema.graphql`:
 
 `yarn codegen`
 
@@ -42,7 +42,6 @@ When ready to deploy new subgraph code:
 yarn auth:studio
 yarn deploy:studio
 ```
-
 
 > After running this command, the CLI will ask for a version label, you can name it however you want, you can use labels such as 0.1 and 0.2 or use letters as well such as uniswap-v2-0.1. Those labels will be visible in Graph Explorer and can be used by curators to decide if they want to signal on this version or not, so choose them wisely.
 >
