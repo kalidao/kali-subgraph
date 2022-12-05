@@ -34,6 +34,21 @@ export function tokenName(address: Address): string | null {
   return name
 }
 
+export function tokenDecimals(address: Address): number {
+  let contract = Erc20.bind(address)
+
+  let decimals = 18
+  let result = contract.try_decimals()
+
+  if (result.reverted) {
+    log.info('Decimals revert. Address - {}', [address.toHexString()])
+  } else {
+    decimals = result.value
+  }
+
+  return decimals
+}
+
 export function tokenSymbol(address: Address): string | null {
   let contract = Erc20.bind(address)
   let symbol = 'UNKNOWN'

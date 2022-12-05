@@ -1,5 +1,5 @@
 import { BigInt } from '@graphprotocol/graph-ts'
-import { Crowdsale, Purchase, Token } from '../../generated/schema'
+import { Crowdsale, Purchase, Token, Kali } from '../../generated/schema'
 import {
   ExtensionSet as ExtensionSetEvent,
   ExtensionCalled as ExtensionCalledEvent,
@@ -7,7 +7,7 @@ import {
   OwnershipTransferred as OwnershipTransferredEvent,
   KaliRateSet as KaliRateSetEvent,
 } from '../../generated/KaliDAOcrowdsaleV2/KaliDAOcrowdsaleV2'
-import { createToken, tokenTotalSupply } from '../helpers/token-helpers'
+import { createToken, tokenName, tokenSymbol, tokenTotalSupply, tokenDecimals } from '../helpers/token-helpers'
 
 // ExtensionSet
 export function handleExtensionSet(event: ExtensionSetEvent): void {
@@ -15,12 +15,20 @@ export function handleExtensionSet(event: ExtensionSetEvent): void {
   const crowdsaleId = daoId + '-crowdsaleV2'
   const crowdsale = new Crowdsale(crowdsaleId)
 
-  crowdsale.active = true
+  if (event.params.purchaseLimit ==  BigInt.fromI32(0)) {
+    crowdsale.active = false 
+  } else {
+    crowdsale.active = true
+  }
+
   crowdsale.dao = daoId
   crowdsale.version = 2
   crowdsale.purchaseLimit = event.params.purchaseLimit
   crowdsale.purchaseMultiplier = event.params.purchaseMultiplier
-  crowdsale.purchaseToken = event.params.purchaseAsset
+  crowdsale.purchaseTokenAddress = event.params.purchaseAsset
+  crowdsale.purchaseTokenName = tokenName(event.params.purchaseAsset)
+  crowdsale.purchaseTokenSymbol = tokenSymbol(event.params.purchaseAsset)
+  crowdsale.purchaseTokenDecimals = tokenDecimals(event.params.purchaseAsset) as i32
   crowdsale.personalLimit = event.params.personalLimit
   crowdsale.saleEnds = event.params.saleEnds
   crowdsale.details = event.params.details
@@ -77,4 +85,11 @@ export function handleClaimTransferred(event: ClaimTransferredEvent): void {}
 export function handleOwnershipTransferred(event: OwnershipTransferredEvent): void {}
 
 // TODO
-export function handleKaliRateSet(event: KaliRateSetEvent): void {}
+export function handleKaliRateSet(event: KaliRateSetEvent): void {
+  const kaliId = 'kali'
+  const kali = new Kali(kaliId)
+
+  kali.swapRate = event.params.kaliRate
+
+  kali.save()
+}

@@ -16,8 +16,8 @@ export function handleExtensionSet(event: ExtensionSetEvent): void {
   crowdsale.dao = daoId
   crowdsale.version = 1
   crowdsale.purchaseLimit = event.params.purchaseLimit
-  crowdsale.purchaseMultiplier = event.params.purchaseMultiplier
-  crowdsale.purchaseToken = event.params.purchaseToken
+  crowdsale.purchaseMultiplier = BigInt.fromI32(event.params.purchaseMultiplier)
+  crowdsale.purchaseTokenAddress = event.params.purchaseToken
   crowdsale.saleEnds = event.params.saleEnds
   crowdsale.details = event.params.details
   crowdsale.listId = event.params.listId

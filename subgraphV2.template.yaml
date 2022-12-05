@@ -53,9 +53,9 @@ dataSources:
         - name: Erc20
           file: ./abis/Erc20.json
       eventHandlers:
-        - event: ExtensionSet(indexed address,uint256,uint8,address,uint32,uint96,uint96,string)
+        - event: ExtensionSet(indexed address,uint256,uint256,address,uint32,uint96,uint96,string)
           handler: handleExtensionSet
-        - event: ExtensionCalled(indexed address,indexed address,uint256)
+        - event: ExtensionCalled(indexed address,indexed address,uint256,indexed address[])
           handler: handleExtensionCalled
         - event: ClaimTransferred(indexed address,indexed address)
           handler: handleClaimTransferred

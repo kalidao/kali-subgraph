@@ -20,6 +20,11 @@ enum VoteType {
   SUPERMAJORITY_QUORUM_REQUIRED
 }
 
+type Kali @entity {
+  id: ID!
+  swapRate: Int
+}
+
 type DAO @entity {
   id: ID!
   address: Bytes!
@@ -102,8 +107,11 @@ type Crowdsale @entity {
   version: Int!
   active: Boolean!
   listId: BigInt
-  purchaseToken: Bytes
-  purchaseMultiplier: Int
+  purchaseTokenAddress: Bytes
+  purchaseTokenName: String 
+  purchaseTokenSymbol: String 
+  purchaseTokenDecimals: Int
+  purchaseMultiplier: BigInt
   purchaseLimit: BigInt
   saleEnds: BigInt
   details: String
