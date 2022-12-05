@@ -21,6 +21,7 @@ import {
   validateProposalType,
   getVotingWeight,
   getDocs,
+  getProposalIdBySerial,
 } from '../helpers/dao-helpers'
 import { tokenTotalSupply } from '../helpers/token-helpers'
 import { ZERO_ADDRESS } from '../helpers/constants'
@@ -59,7 +60,8 @@ export function handleNewProposal(event: NewProposalEvent): void {
 
 export function handleProposalProcessed(event: ProposalProcessedEvent): void {
   const daoId = event.address.toHexString()
-  const proposalId = daoId + '-proposal-' + event.params.proposal.toHex()
+
+  const proposalId = getProposalIdBySerial(daoId, event.params.proposal)
   let proposal = Proposal.load(proposalId)
 
   if (proposal === null) {
@@ -80,6 +82,25 @@ export function handleProposalProcessed(event: ProposalProcessedEvent): void {
     dao.supermajority = getSupermajority(event.address)
     dao.docs = getDocs(event.address)
     dao.save()
+
+    // Handle status update of an ESCAPEd (deleted) proposal
+    if (proposal.proposalType == 'ESCAPE') {
+      // retrieve targeted proposal for ESCAPE(deletion)
+      // an ESCAPE proposal must always have a non-null amounts array with its first element referring to the ESCAPED proposal
+      if (proposal.amounts !== null && proposal.amounts!.length > 0) {
+        let escapedProposalSerial = proposal.amounts![0]
+        if (escapedProposalSerial) {
+          // set flag to ESCAPED
+          const escapedProposalId = getProposalIdBySerial(daoId, escapedProposalSerial)
+          let escapedProposal = Proposal.load(escapedProposalId)
+          if (escapedProposal) {
+            escapedProposal.escaped = true
+            // save changes
+            escapedProposal.save()
+          }
+        }
+      }
+    }
   }
 }
 
