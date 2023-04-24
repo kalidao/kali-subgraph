@@ -20,6 +20,11 @@ enum VoteType {
   SUPERMAJORITY_QUORUM_REQUIRED
 }
 
+enum SaleType {
+  PUBLIC 
+  LIMITED
+}
+
 type Kali @entity {
   id: ID!
   swapRate: Int
@@ -91,6 +96,8 @@ type Proposal @entity {
   escaped: Boolean
   status: Boolean
   votes: [Vote!] @derivedFrom(field: "proposal")
+  isTribute: Boolean
+  tribute: TributeProposal
 }
 
 type Vote @entity {
@@ -108,6 +115,7 @@ type Crowdsale @entity {
   version: Int!
   active: Boolean!
   listId: BigInt
+  list: AccessList
   purchaseTokenAddress: Bytes
   purchaseTokenName: String 
   purchaseTokenSymbol: String 
@@ -119,6 +127,7 @@ type Crowdsale @entity {
   purchase: [Purchase!] @derivedFrom(field: "crowdsale")
   amountPurchased: BigInt!
   personalLimit: BigInt
+  type: SaleType
 }
 
 type Purchase @entity {
@@ -126,6 +135,21 @@ type Purchase @entity {
   crowdsale: Crowdsale!
   purchaser: Bytes!
   purchased: BigInt!
+}
+
+type AccessList @entity {
+  id: ID!
+  creator: Bytes 
+  listed: [User!] @derivedFrom(field: "list")
+  merkleRoot: Bytes
+  uri: String
+}
+
+type User @entity {
+  id: ID!
+  list: AccessList
+  address: Bytes 
+  approved: Boolean
 }
 
 type Redemption @entity {

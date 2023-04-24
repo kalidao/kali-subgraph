@@ -13,5 +13,9 @@
   "redemption": {
     "address": "0x2b8f116e4D9E73A3A9E7CAF1655B9FC01588Db8d",
     "startBlock": 11774722
+  },
+  "accessManager": {
+    "address": "0x9E07053081E51F962d51C755272531B0846e4C31",
+    "startBlock": 11775104	
   }
 }

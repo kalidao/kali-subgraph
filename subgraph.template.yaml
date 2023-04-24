@@ -91,6 +91,36 @@ dataSources:
         - event: KaliRateSet(uint8)
           handler: handleKaliRateSet
       file: ./src/mappings/crowdsale-v2-mapping.ts
+  
+  - kind: ethereum/contract
+    name: KaliAccessManager
+    network: {{network}}
+    source:
+      address: '{{accessManager.address}}'
+      abi: KaliAccessManager
+      startBlock: {{accessManager.startBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - Crowdsale
+        - AccessList
+      abis:
+        - name: KaliAccessManager
+          file: ./abis/KaliAccessManager.json
+      eventHandlers:
+        - event: AccountListed(indexed address,uint256,bool)
+          handler: handleAccountListed
+        - event: ListCreated(indexed address,uint256)
+          handler: handleListCreated
+        - event: MerkleRootSet(uint256,bytes32)
+          handler: handleMerkleRootSet
+        - event: TransferSingle(indexed address,indexed address,indexed address,uint256,uint256)
+          handler: handleTransferSingle
+        - event: URI(string,indexed uint256)
+          handler: handleURI
+      file: ./src/mappings/access-manager-mapping.ts
 
   - kind: ethereum/contract
     name: KaliDAOtribute
